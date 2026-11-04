@@ -139,8 +139,8 @@ function installStyle() {
 .cg-at-tag{display:inline-block;margin-left:6px;padding:0 5px;border-radius:4px;background:rgba(0,226,187,.12);color:rgba(205,255,246,.95);font-size:10px;font-weight:500}
 .cg-at-empty{padding:16px 8px;text-align:center;font-size:11px;opacity:.6;line-height:1.5}`;
   s.textContent += `
-.cg-pe-wrap{position:relative;width:100%;height:100%;box-sizing:border-box;color:var(--input-text,#ddd)}
-.cg-pe{width:100%;height:100%;min-height:90px;box-sizing:border-box;padding:8px 10px 26px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;outline:none;border:1px solid transparent;border-radius:8px;background:var(--comfy-input-bg,#222);font:13px/1.65 Inter,"Microsoft YaHei",system-ui,sans-serif;cursor:text}
+.cg-pe-wrap{position:relative;width:100%;height:100%;min-height:0;overflow:hidden;box-sizing:border-box;color:var(--input-text,#ddd)}
+.cg-pe{position:absolute;inset:0;box-sizing:border-box;padding:8px 10px 26px;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;white-space:pre-wrap;overflow-wrap:anywhere;outline:none;border:1px solid transparent;border-radius:8px;background:var(--comfy-input-bg,#222);font:13px/1.65 Inter,"Microsoft YaHei",system-ui,sans-serif;cursor:text}
 .cg-pe:focus{border-color:rgba(255,255,255,.18)}
 .cg-pe:empty:before{content:attr(data-placeholder);opacity:.4;pointer-events:none}
 .cg-pe.is-raw{font:12px/1.6 Consolas,"Courier New",monospace}
