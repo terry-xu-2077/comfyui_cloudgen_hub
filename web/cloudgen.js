@@ -339,6 +339,8 @@ function balanceCard(d) {
   if (Number(p.topup) > 0 && d.ok) card.append(el("div", { class: "cg-kv" }, el("span", {}, "充值积分"), el("span", {}, `${p.topup_left ?? p.topup} · 最后扣、不清零`)));
   if (p.daily_budget && d.ok) card.append(el("div", { class: "cg-kv" }, el("span", {}, "日均可用"), el("span", {}, `≈ ${p.daily_budget}`)));
   if (p.plan_expire_text) card.append(el("div", { class: "cg-kv" }, el("span", {}, "套餐到期"), el("span", {}, p.plan_left === "已到期" ? "已到期" : `${p.plan_expire_text.slice(0, 10)} · 剩${shortSpan(p.plan_left)}`)));
+  if (d.ok && d.provider === "xyq" && !p.plan_name && !p.plan_expire_text && !(quota > 0))
+    card.append(el("div", { class: "cg-dim", style: "margin-top:4px" }, "接口只提供剩余积分；套餐、到期等需在「⚙ 配置 → 套餐」手动填写"));
   if (p.warn) card.append(el("div", { class: "cg-warn" }, "⚠ " + p.warn));
   return card;
 }
