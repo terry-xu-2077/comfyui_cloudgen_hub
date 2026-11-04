@@ -1,0 +1,14 @@
+config.json
+config.json.tmp
+libtv_credentials.json
+libtv_credentials.json.tmp
+libtv_tools.json
+__pycache__/
+plans.json
+plans.json.tmp
+prices.json
+prices.json.tmp
+assets_cache.json
+assets_cache.json.tmp
+jobs.json
+jobs.json.tmp

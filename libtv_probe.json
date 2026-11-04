@@ -1,0 +1,1838 @@
+{
+  "account_user": {
+    "user": {
+      "uuid": "9053a3ff87c44f962778812f457c8b50",
+      "id": 30108,
+      "nickname": "Terry徐"
+    },
+    "activeAccountId": 259903,
+    "activeTeamId": null,
+    "accounts": {
+      "accounts": [
+        {
+          "accountId": 259903,
+          "accountName": "Terry徐",
+          "accountType": 1,
+          "ownerType": 1,
+          "ownerUuid": "9053a3ff87c44f962778812f457c8b50",
+          "isActive": true,
+          "owner": true,
+          "teamRole": null,
+          "source": null,
+          "memberAccount": {
+            "memberName": "高级版VIP-16300积分 连续包年",
+            "accountLevel": 4,
+            "effective": true
+          }
+        }
+      ]
+    }
+  },
+  "doctor": {
+    "status": "ready",
+    "executionAdmission": {
+      "canvasRun": true,
+      "agentStart": true,
+      "videoSelection": true
+    },
+    "environment": "prod",
+    "serviceVersion": "0.1.0",
+    "identity": {
+      "userId": 30108,
+      "userUuid": "9053a3ff87c44f962778812f457c8b50"
+    }
+  },
+  "search_models_image": {
+    "nodeType": "image",
+    "query": "",
+    "matchKind": "all",
+    "matches": [
+      {
+        "modelKey": "lib-prism",
+        "modelName": "AutoPic",
+        "description": "无需选择模型，智能优化效果，生成高质量图片",
+        "gb": "libtv_model_router_switch",
+        "platform": [
+          "web"
+        ],
+        "autoPick": true,
+        "prefix": [],
+        "labels": [
+          "1.0"
+        ],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/1df44ddb47880cb4ac2161d6a0ee0cfd5f2011a7.png",
+        "estimatedTime": "30s",
+        "supportModality": "image",
+        "modelId": "lib-prism",
+        "displayName": "AutoPic",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "lib-image-2.5-s",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Lib Image 2.5 Pro",
+        "description": "精准生成与编辑，复杂指令稳定还原",
+        "prefix": [],
+        "icon": "https://liblibai-online.liblib.cloud/img/26867b52384f44d6ad5f717dbd710ff7/44e937c59a92e1316948f60d25f5b3ef3c2ea3f6ead2178ef7b85f4cd6b055aa.png",
+        "estimatedTime": "30s",
+        "supportModality": "image",
+        "modelId": "lib-image-2.5-s",
+        "displayName": "Lib Image 2.5 Pro",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "flux-3-image",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Genesis F.3",
+        "description": "角色稳定一致，支持局部与图内文字编辑",
+        "prefix": [],
+        "labels": [
+          "上新"
+        ],
+        "icon": "https://liblibai-online.liblib.cloud/img/7769a090dda6411dbed73c8da22ea01e/19dcbf3a3cfbc409feb30ef6d984ae705766e675cfd11082db383be4857cfa0b.png",
+        "estimatedTime": "30s",
+        "supportModality": "image",
+        "modelId": "flux-3-image",
+        "displayName": "Genesis F.3",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "lib-image-2.5-f",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Lib Image 2.5 Fast",
+        "description": "极速高质量图像生成，兼顾效果与效率",
+        "prefix": [],
+        "icon": "https://liblibai-online.liblib.cloud/img/26867b52384f44d6ad5f717dbd710ff7/44e937c59a92e1316948f60d25f5b3ef3c2ea3f6ead2178ef7b85f4cd6b055aa.png",
+        "estimatedTime": "20s",
+        "supportModality": "image",
+        "modelId": "lib-image-2.5-f",
+        "displayName": "Lib Image 2.5 Fast",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "nebula-ultra",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "General image Pro",
+        "description": "最强图片模型，媲美Nano pro 模型",
+        "prefix": [],
+        "labels": [],
+        "studio": true,
+        "icon": "https://liblibai-online.liblib.cloud/img/26867b52384f44d6ad5f717dbd710ff7/a648ead572dfc3292bf97afa915056222848383e345a342d6aa06ae0adf96899.png",
+        "estimatedTime": "50s",
+        "supportModality": "image",
+        "modelId": "nebula-ultra",
+        "displayName": "General image Pro",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "lib-image-2",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Lib Image",
+        "description": "最新最强图片模型，媲美image2模型",
+        "prefix": [],
+        "labels": [],
+        "studio": true,
+        "icon": "https://liblibai-online.liblib.cloud/img/26867b52384f44d6ad5f717dbd710ff7/44e937c59a92e1316948f60d25f5b3ef3c2ea3f6ead2178ef7b85f4cd6b055aa.png",
+        "estimatedTime": "60s",
+        "supportModality": "image",
+        "modelId": "lib-image-2",
+        "displayName": "Lib Image",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "nebula-2-flash",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "General image V2",
+        "description": "支持联网搜索、文字准确、速度更快",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/2cf82d508e9c2d7af35f031507c1244a025e5fdd.png",
+        "estimatedTime": "25s",
+        "supportModality": "image",
+        "modelId": "nebula-2-flash",
+        "displayName": "General image V2",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "nebula-2.1",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "General image V2.1",
+        "description": "支持联网搜索、文字准确、速度更快",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/2cf82d508e9c2d7af35f031507c1244a025e5fdd.png",
+        "estimatedTime": "25s",
+        "supportModality": "image",
+        "modelId": "nebula-2.1",
+        "displayName": "General image V2.1",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "doubao-seedream-5-0-pro",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Seedream 5.0 Pro",
+        "description": "精准交互式编辑，支持原生多语言排版",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/43df57d720f983795db62c96952a44a86d1bc27a.png",
+        "estimatedTime": "20s",
+        "supportModality": "image",
+        "modelId": "doubao-seedream-5-0-pro",
+        "displayName": "Seedream 5.0 Pro",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "qwen-image-3",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Qwen image 3.0",
+        "description": "擅长复杂版面与精准文字的高质量生图模型",
+        "prefix": [],
+        "labels": [
+          "上新"
+        ],
+        "vip": false,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/d031349093e34e87240f833e6299223cbac7fc06.png",
+        "estimatedTime": "60s",
+        "supportModality": "image",
+        "modelId": "qwen-image-3",
+        "displayName": "Qwen image 3.0",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "jimeng-4.6",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Seedream 4.6",
+        "description": "提升人像一致性、平面设计效果",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/43df57d720f983795db62c96952a44a86d1bc27a.png",
+        "estimatedTime": "20s",
+        "supportModality": "image",
+        "modelId": "jimeng-4.6",
+        "displayName": "Seedream 4.6",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "seedream-5",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Seedream 5.0 Lite",
+        "description": "支持联网搜索，擅长中式风格、审美提升",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/43df57d720f983795db62c96952a44a86d1bc27a.png",
+        "estimatedTime": "20s",
+        "supportModality": "image",
+        "modelId": "seedream-5",
+        "displayName": "Seedream 5.0 Lite",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "seedream-4.5",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Seedream 4.5",
+        "description": "多角色一致性、擅长中式风格",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/43df57d720f983795db62c96952a44a86d1bc27a.png",
+        "estimatedTime": "15s",
+        "supportModality": "image",
+        "modelId": "seedream-4.5",
+        "displayName": "Seedream 4.5",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "mj-v8.2",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Style Image V8.2",
+        "description": "最新版本、细节更丰富、美学水准大幅提升",
+        "prefix": [],
+        "requiresWhitelistPermission": true,
+        "labels": [
+          "风格上新"
+        ],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/904937c79884f5282e4566fc0e28a3f643a3c7ff.png",
+        "estimatedTime": "50s",
+        "supportModality": "image",
+        "modelId": "mj-v8.2",
+        "displayName": "Style Image V8.2",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "mj-v8.1",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Style Image V8.1",
+        "description": "生图更连贯、细节更丰富、美学水准大幅提升",
+        "prefix": [],
+        "labels": [
+          "风格上新"
+        ],
+        "studio": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/904937c79884f5282e4566fc0e28a3f643a3c7ff.png",
+        "estimatedTime": "50s",
+        "supportModality": "image",
+        "modelId": "mj-v8.1",
+        "displayName": "Style Image V8.1",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "mj-v7",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Style Image V7",
+        "description": "最佳美学，电影质感，创意能力强",
+        "prefix": [],
+        "labels": [
+          "风格上新"
+        ],
+        "studio": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/904937c79884f5282e4566fc0e28a3f643a3c7ff.png",
+        "estimatedTime": "50s",
+        "supportModality": "image",
+        "modelId": "mj-v7",
+        "displayName": "Style Image V7",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "mj-niji7",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Style Image Niji 7",
+        "description": "动漫高审美模型，风格多样",
+        "prefix": [],
+        "labels": [
+          "风格上新"
+        ],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/904937c79884f5282e4566fc0e28a3f643a3c7ff.png",
+        "estimatedTime": "50s",
+        "supportModality": "image",
+        "modelId": "mj-niji7",
+        "displayName": "Style Image Niji 7",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "z-image",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Z Image Turbo",
+        "description": "极速生成，适合真实感图片",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/edd01cd754fe106fdaecfe65f89bde412ceb4343.png",
+        "estimatedTime": "10s",
+        "supportModality": "image",
+        "modelId": "z-image",
+        "displayName": "Z Image Turbo",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "nebula-core",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "General image",
+        "description": "语义理解强、媲美一代Nano模型",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/2cf82d508e9c2d7af35f031507c1244a025e5fdd.png",
+        "estimatedTime": "50s",
+        "supportModality": "image",
+        "modelId": "nebula-core",
+        "displayName": "General image",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "qwen",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "QwenImage",
+        "description": "Qwen 生图模型，文字排版能力强",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/d031349093e34e87240f833e6299223cbac7fc06.png",
+        "estimatedTime": "60s",
+        "supportModality": "image",
+        "modelId": "qwen",
+        "displayName": "QwenImage",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "qwen-edit",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "QwenImage Edit",
+        "description": "Qwen系编辑模型，精细可控",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/d031349093e34e87240f833e6299223cbac7fc06.png",
+        "estimatedTime": "60s",
+        "supportModality": "image",
+        "modelId": "qwen-edit",
+        "displayName": "QwenImage Edit",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "orbit-2-image",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Shock Image 2",
+        "description": "电影质感强光影细腻",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/d0a5bef9f4a21c2601059203fb17983ce51e0f4e.png",
+        "estimatedTime": "40s",
+        "supportModality": "image",
+        "modelId": "orbit-2-image",
+        "displayName": "Shock Image 2",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "seedream-4",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Seedream 4.0",
+        "description": "极速高质出图，支持中文文字与海报设计",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/43df57d720f983795db62c96952a44a86d1bc27a.png",
+        "estimatedTime": "15s",
+        "supportModality": "image",
+        "modelId": "seedream-4",
+        "displayName": "Seedream 4.0",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "flux-2-pro",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "基础算法F.2 Pro",
+        "description": "新一代图片生成与编辑",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/d0a5bef9f4a21c2601059203fb17983ce51e0f4e.png",
+        "estimatedTime": "60s",
+        "supportModality": "image",
+        "modelId": "flux-2-pro",
+        "displayName": "基础算法F.2 Pro",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "flux-2-flex",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "基础算法F.2 Flex",
+        "description": "新一代图片生成与编辑",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/d0a5bef9f4a21c2601059203fb17983ce51e0f4e.png",
+        "estimatedTime": "60s",
+        "supportModality": "image",
+        "modelId": "flux-2-flex",
+        "displayName": "基础算法F.2 Flex",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "flux-1",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "基础算法F.1",
+        "description": "经典生图模型，风格多样范围广",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/d0a5bef9f4a21c2601059203fb17983ce51e0f4e.png",
+        "estimatedTime": "60s",
+        "supportModality": "image",
+        "modelId": "flux-1",
+        "displayName": "基础算法F.1",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "image-editor",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "图片编辑模型",
+        "description": "快速编辑，局部精准改图",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/d0a5bef9f4a21c2601059203fb17983ce51e0f4e.png",
+        "estimatedTime": "60s",
+        "supportModality": "image",
+        "modelId": "image-editor",
+        "displayName": "图片编辑模型",
+        "nodeTypes": [
+          "image"
+        ]
+      },
+      {
+        "modelKey": "image-editor-pro",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "图片编辑Pro",
+        "description": "快速编辑，局部精准改图",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/d0a5bef9f4a21c2601059203fb17983ce51e0f4e.png",
+        "estimatedTime": "60s",
+        "supportModality": "image",
+        "modelId": "image-editor-pro",
+        "displayName": "图片编辑Pro",
+        "nodeTypes": [
+          "image"
+        ]
+      }
+    ]
+  },
+  "search_models_video": {
+    "nodeType": "video",
+    "query": "",
+    "matchKind": "all",
+    "matches": [
+      {
+        "modelKey": "lib-cinema",
+        "modelName": "AutoTake",
+        "description": "无需选择模型，智能优化效果，生成高质量视频",
+        "gb": "libtv_model_router_switch",
+        "platform": [
+          "web"
+        ],
+        "autoPick": true,
+        "prefix": [],
+        "labels": [
+          "1.0"
+        ],
+        "vip": false,
+        "studio": true,
+        "pricingRule": "按秒计价，此模型上传的参考视频时长计入总时长",
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/f70345b8dead8caa8819d2b0127c1c99f9cfccb0.png",
+        "estimatedTime": "2min",
+        "supportModality": "video",
+        "modelId": "lib-cinema",
+        "displayName": "AutoTake",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "star-video2.5",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Seedance 2.5",
+        "aliasName": "2.5",
+        "description": "最强视频模型，全能参考，30s音画同步",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "studio": true,
+        "pricingRule": "按秒计价，此模型上传的参考视频时长计入总时长",
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/43df57d720f983795db62c96952a44a86d1bc27a.png",
+        "estimatedTime": "2min",
+        "supportModality": "video",
+        "modelId": "star-video2.5",
+        "displayName": "Seedance 2.5",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "star-video2.5-draft",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Seedance 2.5（样片模式）",
+        "aliasName": "SD2.5(样片)",
+        "description": "480P 低成本试片，满意后直出高清版本",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "pricingRule": "按秒计价，此模型上传的参考视频时长计入总时长",
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/43df57d720f983795db62c96952a44a86d1bc27a.png",
+        "estimatedTime": "1min",
+        "supportModality": "video",
+        "modelId": "star-video2.5-draft",
+        "displayName": "Seedance 2.5（样片模式）",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "star-video2",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Seedance 2.0",
+        "aliasName": "2.0",
+        "description": "最强视频模型，全能参考，15s音画同步",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "studio": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/43df57d720f983795db62c96952a44a86d1bc27a.png",
+        "estimatedTime": "2min",
+        "supportModality": "video",
+        "modelId": "star-video2",
+        "displayName": "Seedance 2.0",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "star-video2-fast",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Seedance 2.0 Fast",
+        "aliasName": "2.0 Fast",
+        "description": "最强视频模型快速版，全能参考，15s音画同步",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/43df57d720f983795db62c96952a44a86d1bc27a.png",
+        "estimatedTime": "2min",
+        "supportModality": "video",
+        "modelId": "star-video2-fast",
+        "displayName": "Seedance 2.0 Fast",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "star-video2-mini",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Seedance 2.0 Mini",
+        "aliasName": "2.0 Mini",
+        "description": "最强视频模型mini版，高性价比生成，15s音画同步",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/43df57d720f983795db62c96952a44a86d1bc27a.png",
+        "estimatedTime": "2min",
+        "supportModality": "video",
+        "modelId": "star-video2-mini",
+        "displayName": "Seedance 2.0 Mini",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "wanx3.0-prime",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Wan 3.0 Prime",
+        "description": "超快速生成，全模态参考，超写实高一致性",
+        "prefix": [],
+        "labels": [],
+        "vip": false,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/d031349093e34e87240f833e6299223cbac7fc06.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "wanx3.0-prime",
+        "displayName": "Wan 3.0 Prime",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "wanx3.0",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Wan 3.0",
+        "description": "全模态参考，支持文档与网页输入，超写实高一致性生成",
+        "prefix": [],
+        "labels": [],
+        "status": {
+          "name": "通畅",
+          "style": "success",
+          "start": "14:00",
+          "end": "18:00",
+          "timeZone": "Asia/Shanghai"
+        },
+        "vip": false,
+        "studio": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/d031349093e34e87240f833e6299223cbac7fc06.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "wanx3.0",
+        "displayName": "Wan 3.0",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "kling-v4",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Kling 4.0",
+        "description": "高视听品质，叙事连贯，创意更控制",
+        "prefix": [],
+        "labels": [],
+        "status": {
+          "name": "忙碌",
+          "style": "warn",
+          "start": "14:00",
+          "end": "18:00",
+          "timeZone": "Asia/Shanghai"
+        },
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/2db40556bb3eecf270635541d94cf247ce59965e.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "kling-v4",
+        "displayName": "Kling 4.0",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "vidu-q4",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Vidu Q4 Preview",
+        "description": "真实情绪表达，大师级镜头调度，2k/4k分辨率直出",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/932d967dc1acd105797ad0a4cf30a45b59b340ca.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "vidu-q4",
+        "displayName": "Vidu Q4 Preview",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "happy-horse-1.1",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Happy Horse 1.1",
+        "description": "阿里最新视频模型，一致性与视听质量更可控",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://liblibai-online.liblib.cloud/img/7769a090dda6411dbed73c8da22ea01e/0eb3c9ed12688fac6f630ff032ee68f6cd030c5784dc790d274aa283294c4e8e.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "happy-horse-1.1",
+        "displayName": "Happy Horse 1.1",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "happy-horse-1",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Happy Horse 1.0",
+        "description": "阿里视频模型，支持多参生成",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://liblibai-online.liblib.cloud/img/7769a090dda6411dbed73c8da22ea01e/0eb3c9ed12688fac6f630ff032ee68f6cd030c5784dc790d274aa283294c4e8e.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "happy-horse-1",
+        "displayName": "Happy Horse 1.0",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "minimax-h3-hs",
+        "modelName": "H3-Highspeed",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "description": "后训练极速视频生成，支持文生、图生及首尾帧控制",
+        "prefix": [],
+        "labels": [
+          "首发"
+        ],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/7f62d6d3837bdc432b69a56cd81157a93e055d2e.png",
+        "estimatedTime": "30s",
+        "supportModality": "video",
+        "modelId": "minimax-h3-hs",
+        "displayName": "H3-Highspeed",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "MiniMax-Hailuo-H3-Max",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Minimax H3 Max",
+        "description": "后训练极速视频生成，支持文生、图生及首尾帧控制",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/7f62d6d3837bdc432b69a56cd81157a93e055d2e.png",
+        "estimatedTime": "30s",
+        "supportModality": "video",
+        "modelId": "MiniMax-Hailuo-H3-Max",
+        "displayName": "Minimax H3 Max",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "MiniMax-Hailuo-H3",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Minimax H3",
+        "description": "全模态输入，多参数控制，多场景商用级生成",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "studio": true,
+        "pricingRule": "按秒计价，此模型上传的参考视频时长计入总时长",
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/7f62d6d3837bdc432b69a56cd81157a93e055d2e.png",
+        "estimatedTime": "2min",
+        "supportModality": "video",
+        "modelId": "MiniMax-Hailuo-H3",
+        "displayName": "Minimax H3",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "kling-v3-omni",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Kling O3",
+        "description": "视频编辑模型、参考一致性、音画同出、多镜头",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/2db40556bb3eecf270635541d94cf247ce59965e.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "kling-v3-omni",
+        "displayName": "Kling O3",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "kling-v3-turbo",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "可灵 3.0 Turbo",
+        "description": "视频生成模型，高质感、支持多镜头",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/2db40556bb3eecf270635541d94cf247ce59965e.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "kling-v3-turbo",
+        "displayName": "可灵 3.0 Turbo",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "kling-video-o3",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Kling 3.0",
+        "description": "视频生成模型，高质感、支持多镜头",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/2db40556bb3eecf270635541d94cf247ce59965e.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "kling-video-o3",
+        "displayName": "Kling 3.0",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "wanx2.7-video",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Wan 2.7",
+        "description": "全能参考，支持修改视频画面、剧情、环境",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/d031349093e34e87240f833e6299223cbac7fc06.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "wanx2.7-video",
+        "displayName": "Wan 2.7",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "kling-video-o1",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Kling O1",
+        "description": "可灵一代编辑模型、支持多模态输入",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/2db40556bb3eecf270635541d94cf247ce59965e.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "kling-video-o1",
+        "displayName": "Kling O1",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "scene-2",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Shot V2",
+        "description": "直出15s有剧情多镜头视频",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/886250385824a6f6f38c59a06626db49e3e3e371.png",
+        "estimatedTime": "4min",
+        "supportModality": "video",
+        "modelId": "scene-2",
+        "displayName": "Shot V2",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "scene-2-ultra",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Shot V2 Pro",
+        "description": "直出15s有剧情多镜头视频加强版",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/886250385824a6f6f38c59a06626db49e3e3e371.png",
+        "estimatedTime": "4min",
+        "supportModality": "video",
+        "modelId": "scene-2-ultra",
+        "displayName": "Shot V2 Pro",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "motion-3.1-rapid",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "video 3.1 Fast",
+        "description": "更强叙事理解与镜头控制，速度更快",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/9fdf06dce5378519c38797aa32e25c8b6a1f3b4d.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "motion-3.1-rapid",
+        "displayName": "video 3.1 Fast",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "motion-3.1-lite",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Video 3.1 Lite",
+        "description": "生成速度快、超高性价比",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/9fdf06dce5378519c38797aa32e25c8b6a1f3b4d.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "motion-3.1-lite",
+        "displayName": "Video 3.1 Lite",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "motion-3.1",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Video 3.1",
+        "description": "更强叙事理解与镜头控制",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/9fdf06dce5378519c38797aa32e25c8b6a1f3b4d.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "motion-3.1",
+        "displayName": "Video 3.1",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "wanxiang-v2-6",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Wan 2.6",
+        "description": "音画同步，支持多机位镜头，最长可生15秒视频",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/d031349093e34e87240f833e6299223cbac7fc06.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "wanxiang-v2-6",
+        "displayName": "Wan 2.6",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "MiniMax-Hailuo-2.3-Fast",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Hailuo 2.3 Fast",
+        "description": "善于表达动作、表情、镜头，更快速",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/7f62d6d3837bdc432b69a56cd81157a93e055d2e.png",
+        "estimatedTime": "1min",
+        "supportModality": "video",
+        "modelId": "MiniMax-Hailuo-2.3-Fast",
+        "displayName": "Hailuo 2.3 Fast",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "MiniMax-Hailuo-2.3",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Hailuo 2.3",
+        "description": "善于表达动作、表情、镜头，更高质感",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/7f62d6d3837bdc432b69a56cd81157a93e055d2e.png",
+        "estimatedTime": "2min",
+        "supportModality": "video",
+        "modelId": "MiniMax-Hailuo-2.3",
+        "displayName": "Hailuo 2.3",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "seedance-1.5-pro",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Seedance1.5 Pro",
+        "description": "音画同步，支持多机位镜头，最长可生12秒视频",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/43df57d720f983795db62c96952a44a86d1bc27a.png",
+        "estimatedTime": "2min",
+        "supportModality": "video",
+        "modelId": "seedance-1.5-pro",
+        "displayName": "Seedance1.5 Pro",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "doubao-seedance-pro",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Seedance 1.0 Pro",
+        "description": "高精度提示词理解，40秒生成1080P视频",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/43df57d720f983795db62c96952a44a86d1bc27a.png",
+        "estimatedTime": "2min",
+        "supportModality": "video",
+        "modelId": "doubao-seedance-pro",
+        "displayName": "Seedance 1.0 Pro",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "doubao-seedance-lite",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Seedance 1.0 Lite",
+        "description": "轻量快速，一键进行日常视频生成",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/43df57d720f983795db62c96952a44a86d1bc27a.png",
+        "estimatedTime": "1min",
+        "supportModality": "video",
+        "modelId": "doubao-seedance-lite",
+        "displayName": "Seedance 1.0 Lite",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "kling-v2-6",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Kling 2.6",
+        "description": "视频生成模型、直出音画同步",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/2db40556bb3eecf270635541d94cf247ce59965e.png",
+        "estimatedTime": "2min",
+        "supportModality": "video",
+        "modelId": "kling-v2-6",
+        "displayName": "Kling 2.6",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "kling-v3-motion-control",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Kling3.0 动作迁移",
+        "description": "该模型需输入1张图片、1条视频",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/2db40556bb3eecf270635541d94cf247ce59965e.png",
+        "estimatedTime": "8min",
+        "supportModality": "video",
+        "modelId": "kling-v3-motion-control",
+        "displayName": "Kling3.0 动作迁移",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "midjourney-video",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "MJ Video",
+        "description": "图生视频效果稳定，画面表现力强",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/904937c79884f5282e4566fc0e28a3f643a3c7ff.png",
+        "estimatedTime": "2min",
+        "supportModality": "video",
+        "modelId": "midjourney-video",
+        "displayName": "MJ Video",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "MiniMax-Hailuo-o2",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Hailuo 02",
+        "description": "画质稳定，适合打造运动特效场景",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/7f62d6d3837bdc432b69a56cd81157a93e055d2e.png",
+        "estimatedTime": "2min",
+        "supportModality": "video",
+        "modelId": "MiniMax-Hailuo-o2",
+        "displayName": "Hailuo 02",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "viduq2",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Vidu Q2",
+        "description": "多图主体参考，精确控制效果佳",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/932d967dc1acd105797ad0a4cf30a45b59b340ca.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "viduq2",
+        "displayName": "Vidu Q2",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "viduq2-pro",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Vidu Q2 Pro",
+        "description": "Vidu Q2 Pro",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/932d967dc1acd105797ad0a4cf30a45b59b340ca.png",
+        "estimatedTime": "",
+        "supportModality": "video",
+        "modelId": "viduq2-pro",
+        "displayName": "Vidu Q2 Pro",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "viduq2-turbo",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Vidu Q2 Turbo",
+        "description": "Vidu Q2 Turbo",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/932d967dc1acd105797ad0a4cf30a45b59b340ca.png",
+        "estimatedTime": "",
+        "supportModality": "video",
+        "modelId": "viduq2-turbo",
+        "displayName": "Vidu Q2 Turbo",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "viduq3-pro",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Vidu Q3 Pro",
+        "description": "支持主体参考，精确控制效果佳",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/932d967dc1acd105797ad0a4cf30a45b59b340ca.png",
+        "estimatedTime": "2min",
+        "supportModality": "video",
+        "modelId": "viduq3-pro",
+        "displayName": "Vidu Q3 Pro",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "omnihuman-1.5",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "OmniHuman 1.5",
+        "description": "多模态数字人视频生成",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/43df57d720f983795db62c96952a44a86d1bc27a.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "omnihuman-1.5",
+        "displayName": "OmniHuman 1.5",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "kling-v2-5-turbo-pro",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Kling 2.5",
+        "description": "速度快、效果稳定、性价比高",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/2db40556bb3eecf270635541d94cf247ce59965e.png",
+        "estimatedTime": "2min",
+        "supportModality": "video",
+        "modelId": "kling-v2-5-turbo-pro",
+        "displayName": "Kling 2.5",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "kling-2.1",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Kling 2.1",
+        "description": "支持首尾帧，图生视频效果更出色",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/2db40556bb3eecf270635541d94cf247ce59965e.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "kling-2.1",
+        "displayName": "Kling 2.1",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "wanxiang-plus",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Wan 2.2",
+        "description": "支持特效、玩法千变万化",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/d031349093e34e87240f833e6299223cbac7fc06.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "wanxiang-plus",
+        "displayName": "Wan 2.2",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "wanxiang-preview",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Wan 2.5",
+        "description": "支持特效、直出音画同步",
+        "prefix": [],
+        "labels": [],
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/d031349093e34e87240f833e6299223cbac7fc06.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "wanxiang-preview",
+        "displayName": "Wan 2.5",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "pixverse-v5.5",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Pixverse V5.5",
+        "description": "支持特效、玩法丰富",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/c4a3e99e9ba39868128ad87bdf2f5d2454d59234.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "pixverse-v5.5",
+        "displayName": "Pixverse V5.5",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "pixverse-v5",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Pixverse V5",
+        "description": "支持特效、玩法丰富",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/c4a3e99e9ba39868128ad87bdf2f5d2454d59234.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "pixverse-v5",
+        "displayName": "Pixverse V5",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "motion-3-prime",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "Veo3(Libveo 3)",
+        "description": "电影级真实动态表现、音画同出",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/9fdf06dce5378519c38797aa32e25c8b6a1f3b4d.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "motion-3-prime",
+        "displayName": "Veo3(Libveo 3)",
+        "nodeTypes": [
+          "video"
+        ]
+      },
+      {
+        "modelKey": "motion-3-rapid",
+        "platform": [
+          "web",
+          "app",
+          "pc"
+        ],
+        "modelName": "video 3 Fast",
+        "description": "高速生成流畅动态、音画同出",
+        "prefix": [],
+        "labels": [],
+        "vip": true,
+        "icon": "https://libtv-res.liblib.art/upload-images/70a305c50c704a778db114468830617b/9fdf06dce5378519c38797aa32e25c8b6a1f3b4d.png",
+        "estimatedTime": "3min",
+        "supportModality": "video",
+        "modelId": "motion-3-rapid",
+        "displayName": "video 3 Fast",
+        "nodeTypes": [
+          "video"
+        ]
+      }
+    ]
+  },
+  "list_projects": {
+    "page": 1,
+    "pageSize": 5,
+    "teamId": 0,
+    "data": {
+      "projectMetaList": [
+        {
+          "id": 16850105,
+          "uuid": "28cbd3bf05384149bfa3aa3c3b848c5d",
+          "name": "画布 1",
+          "visibility": 0,
+          "ownerId": 30108,
+          "createdAtMs": 1793042068000,
+          "updatedAtMs": 1793042069000,
+          "folderId": 13113417,
+          "projectSpaceId": 13113417,
+          "projectType": 0,
+          "bizScene": 0,
+          "source": 0
+        },
+        {
+          "id": 16222180,
+          "uuid": "82f0f7a2234e45cf819908fe4c81d8ec",
+          "name": "异星边境 S1E01｜一块生物电池｜Seedance 2.5 480P",
+          "description": "依据 OffworldFrontier main e01f678 的第一集剧本与导演分镜，制作 2分45秒写实科幻短剧。",
+          "visibility": 0,
+          "ownerId": 30108,
+          "createdAtMs": 1792617755000,
+          "updatedAtMs": 1792617756000,
+          "folderId": 12510908,
+          "projectSpaceId": 12510908,
+          "projectType": 0,
+          "bizScene": 0,
+          "source": 0
+        },
+        {
+          "id": 8398837,
+          "uuid": "7f42148186d6422bbaa63c6b62d89056",
+          "name": "画布 1",
+          "visibility": 0,
+          "ownerId": 30108,
+          "createdAtMs": 1786288041000,
+          "updatedAtMs": 1786288041000,
+          "folderId": 4995954,
+          "projectSpaceId": 4995954,
+          "projectType": 0,
+          "bizScene": 0,
+          "source": 0
+        },
+        {
+          "id": 6830208,
+          "uuid": "d9db18a0ad95479a96d2528ee4be8ae3",
+          "name": "画布 1",
+          "visibility": 0,
+          "ownerId": 30108,
+          "createdAtMs": 1784636741000,
+          "updatedAtMs": 1784636741000,
+          "folderId": 3339043,
+          "projectSpaceId": 3339043,
+          "projectType": 0,
+          "bizScene": 0,
+          "source": 0
+        },
+        {
+          "id": 5519022,
+          "uuid": "25752a4605c94dc2855269cec0d8c20c",
+          "name": "画布 1",
+          "visibility": 0,
+          "ownerId": 30108,
+          "createdAtMs": 1783090395000,
+          "updatedAtMs": 1783090395000,
+          "folderId": 2019331,
+          "projectSpaceId": 2019331,
+          "projectType": 0,
+          "bizScene": 0,
+          "source": 0
+        }
+      ],
+      "total": 11
+    }
+  },
+  "get_model_image": {
+    "ok": true,
+    "code": 0,
+    "query": "AutoPic",
+    "modelName": "AutoPic",
+    "displayName": "AutoPic",
+    "modelId": "lib-prism",
+    "modelKey": "lib-prism",
+    "toolKey": "lib-prism",
+    "modality": "image",
+    "inputContract": {
+      "model": "lib-prism",
+      "modality": "image",
+      "promptSchema": {
+        "description": "",
+        "type": "string"
+      },
+      "parameterSchemas": {
+        "generate": {
+          "type": "object",
+          "properties": {
+            "resolution": {
+              "enum": [
+                "1K",
+                "2K",
+                "4K"
+              ],
+              "type": [
+                "string",
+                "number",
+                "boolean"
+              ],
+              "default": "2K"
+            },
+            "ratio": {
+              "enum": [
+                "auto",
+                "1:1",
+                "9:16",
+                "16:9",
+                "3:4",
+                "4:3",
+                "3:2",
+                "2:3",
+                "4:5",
+                "5:4",
+                "8:1",
+                "1:8",
+                "4:1",
+                "1:4",
+                "21:9"
+              ],
+              "type": [
+                "string",
+                "number",
+                "boolean"
+              ],
+              "default": "16:9"
+            },
+            "search_enabled": {
+              "type": [
+                "string",
+                "number",
+                "boolean"
+              ],
+              "default": 0
+            },
+            "count": {
+              "enum": [
+                1,
+                2,
+                4
+              ],
+              "type": "integer",
+              "minimum": 1,
+              "description": "Use the user's exact image quantity. A new image run defaults to one, even on an existing node; a larger model UI default is not used.",
+              "default": 1
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "description": "Supply model, prompt and creative params separately. Parameter alternatives depend on the real references; internal planning resolves the applicable contract. Defaults come from the active Web model settings and execution count policy. Explicit user choices take priority, then task-based host decisions; otherwise omit controls to use defaults. Existing nodes retain omitted settings. Do not select the highest option without a task reason. Recover accepted tasks with the original key and arguments, not new defaults. Do not copy raw schema/config/remoteExecution."
+    }
+  },
+  "get_model_video": {
+    "error": "LibTV 工具 get_model 报错：\"Error executing tool get_model: MODEL_LOOKUP_FAILED: 未找到模型（优先按 supportModels 展示名 modelName 反查 modelKey；否则按 modelKey / toolKey / tool_spec 内 modelName）: lib-cinema\""
+  }
+}
