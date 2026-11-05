@@ -1,4 +1,4 @@
-# ComfyUI 云端生成：小云雀 + LibTV
+# ComfyUI CloudGen Hub：云端生成（小云雀 + LibTV + Lovart + Flow2API）
 
 一组 ComfyUI 节点，把 **小云雀（xyq.jianying.com）** 和 **LibTV（mcp.liblib.tv）** 的图片 / 视频生成接进工作流，并在侧边栏显示两边的剩余积分。
 

@@ -96,7 +96,7 @@ class MCPClient:
     def _initialize(self):
         self.session_id = None
         res = self._rpc("initialize", {"protocolVersion": PROTOCOL, "capabilities": {},
-                                       "clientInfo": {"name": "comfyui-libtv-xyq", "version": "0.1"}}, timeout=30)
+                                       "clientInfo": {"name": "comfyui-cloudgen-hub", "version": "0.1"}}, timeout=30)
         if isinstance(res, dict) and res.get("protocolVersion"):
             self.protocol = res["protocolVersion"]
         if self.session_id is None:
