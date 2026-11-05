@@ -240,6 +240,10 @@ def _fix_url(u: str) -> str:
     return u
 
 
+def _is_error_line(ln: str) -> bool:
+    return ln.startswith(("错误", "❌")) or ln.lower().startswith("error") or "生成失败" in ln
+
+
 def _friendly_progress(line: str) -> str:
     """Flow2API 的进度文字里有打码/验证码等内部细节，节点上统一显示成「正在生成中…」。"""
     if re.search(r"打码|验证码|reCAPTCHA|captcha|recaptcha", line, re.I):
@@ -288,7 +292,7 @@ def chat_generate(model_id: str, prompt: str, images: list[str], node_id=None, t
                     text += piece
                     for ln in piece.splitlines():
                         ln = ln.strip()
-                        if ln.startswith("错误") or ln.lower().startswith("error"):
+                        if _is_error_line(ln):
                             errors.append(ln)
                         elif ln and not URL_RE.search(ln):
                             shown = _friendly_progress(ln)
@@ -309,7 +313,9 @@ def chat_generate(model_id: str, prompt: str, images: list[str], node_id=None, t
         raise CloudGenError(f"Flow2API HTTP {exc.code}：{detail}") from exc
     except urllib.error.URLError as exc:
         raise CloudGenError(f"连不上 Flow2API（{base_url()}）：{exc.reason}") from exc
-    urls = [_fix_url(u.rstrip(".,;")) for u in URL_RE.findall(text)]
+    # 错误行里的链接（如 curl 报错附带的文档地址）不是成品
+    result_text = "\n".join(ln for ln in text.splitlines() if not _is_error_line(ln.strip()))
+    urls = [_fix_url(u.rstrip(".,;")) for u in URL_RE.findall(result_text)]
     if not urls:
         raise CloudGenError("Flow2API 没有返回结果：" + ("；".join(errors) or text.strip()[-300:] or "空响应"))
     return {"text": text, "urls": list(dict.fromkeys(urls)), "errors": errors}
@@ -322,6 +328,13 @@ def fetch(url: str, timeout: float = 600) -> bytes:
     status, _, data = util.http_request(url, headers=hdrs, timeout=timeout)
     if status >= 400:
         raise CloudGenError(f"下载 Flow2API 结果失败 HTTP {status}: {url[:120]}")
+    return data
+
+
+def fetch_image(url: str) -> bytes:
+    data = fetch(url)
+    if not data.startswith((b"\x89PNG", b"\xff\xd8\xff", b"GIF8", b"RIFF")):
+        raise CloudGenError(f"Flow2API 返回的不是图片：{url[:120]}（{data[:80].decode('utf-8', 'replace').strip()}）")
     return data
 
 

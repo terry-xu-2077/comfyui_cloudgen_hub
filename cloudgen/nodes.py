@@ -716,7 +716,7 @@ class FlowImage(_ListInput):
                 util.send_progress(unique_id, "生成中" + (f"（第 {n + 1}/{count} 张）" if count > 1 else "") + "…")
                 out = flow.chat_generate(mid, text, ref_urls, unique_id, timeout=900)
                 u = out["urls"][-1]
-                blobs.append(flow.fetch(u)); urls.append(u)
+                blobs.append(flow.fetch_image(u)); urls.append(u)
         except CloudGenError as exc:
             jobs.update(jid, status="failed", error=str(exc)[:300])
             raise
