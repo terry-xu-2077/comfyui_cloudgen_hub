@@ -3,7 +3,9 @@
 配置（config.json）：flow_base_url（自建服务地址，无默认值）、flow_api_key。
 接口：
   GET  /v1/models                 模型列表（Bearer api_key）
-  POST /v1/chat/completions       生图/生视频，stream=true，参考图用 image_url 的 base64 data URL
+  POST /v1/media/upload           上传参考图（原始字节），返回 id
+  HEAD /v1/media/{id}             素材是否还在（200/404）
+  POST /v1/chat/completions       生图/生视频，stream=true，参考图用 image_url 的 ref://id（旧服务端退回 base64 data URL）
   GET  /health                    服务与账号状态（公开）
 """
 from __future__ import annotations
@@ -201,6 +203,28 @@ def data_url(png_bytes: bytes) -> str:
     return f"data:{mime};base64," + base64.b64encode(data).decode()
 
 
+def image_ref(png_bytes: bytes) -> str:
+    """参考图先上传到 Flow2API 换成 ref://素材ID；相同内容只上传一次，服务端已删除则重传。
+    服务端还没有 /v1/media/upload（未更新）时退回内嵌 data URL。"""
+    key = f"flow:{base_url()}:{util.sha1(png_bytes)}"
+    cached = util.asset_get(key)
+    if cached:
+        status, _, _ = util.http_request(f"{_need_base()}/v1/media/{cached}", method="HEAD", headers=_headers(), timeout=20)
+        if status == 200:
+            return f"ref://{cached}"
+        util.asset_drop(key)
+    status, _, data = util.http_request(_need_base() + "/v1/media/upload", method="POST",
+                                        headers=_headers({"Content-Type": "application/octet-stream"}),
+                                        body=png_bytes, timeout=300)
+    if status in (404, 405):
+        return data_url(png_bytes)
+    if status >= 400:
+        raise CloudGenError(f"Flow2API 上传参考图失败 HTTP {status}：{data.decode('utf-8', 'replace')[:300]}")
+    upload_id = json.loads(data.decode("utf-8"))["id"]
+    util.asset_put(key, upload_id, "flow-ref")
+    return f"ref://{upload_id}"
+
+
 URL_RE = re.compile(r"""(?:https?://[^\s"'<>()\]]+|data:(?:image|video)/[\w.+-]+;base64,[A-Za-z0-9+/=]+)""")
 
 
@@ -228,7 +252,7 @@ def chat_generate(model_id: str, prompt: str, images: list[bytes], node_id=None,
         raise CloudGenError("Flow2API 还没配置 API Key")
     if images:
         content: list | str = [{"type": "text", "text": prompt}] + [
-            {"type": "image_url", "image_url": {"url": data_url(b)}} for b in images]
+            {"type": "image_url", "image_url": {"url": image_ref(b)}} for b in images]
     else:
         content = prompt
     body = json.dumps({"model": model_id, "messages": [{"role": "user", "content": content}], "stream": True},
