@@ -11,6 +11,5 @@ dependencies = []
 Repository = "https://github.com/terry-xu-2077/comfyui_cloudgen_hub"
 
 [tool.comfy]
-# PublisherId 需要先在 https://registry.comfy.org 创建发布者后填入（即你的 publisher id，不带 @）
-PublisherId = ""
+PublisherId = "TerryXu"
 DisplayName = "CloudGen Hub"
