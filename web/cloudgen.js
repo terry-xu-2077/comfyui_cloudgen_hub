@@ -314,7 +314,18 @@ function flowCard(d) {
   if (d.ok) {
     card.append(el("div", {}, el("span", { class: "cg-big" }, `${f.active ?? 0}`), el("span", { class: "cg-dim" }, ` / ${f.total ?? 0} 个账号可用`)));
     if (f.banned) card.append(el("div", { class: "cg-warn" }, `⚠ ${f.banned} 个账号被限流（429）`));
-    card.append(el("div", { class: "cg-dim" }, "Google Flow 积分请在 Flow2API 管理后台查看"));
+    const u = f.usage;
+    if (u) {
+      card.append(el("div", { class: "cg-dim", style: "margin-top:6px" }, "今日图片限额"));
+      for (const q of u.image_daily || []) {
+        const pct = q.limit ? Math.min(100, (q.used / q.limit) * 100) : 0;
+        card.append(el("div", { class: "cg-row", style: "display:flex;justify-content:space-between;margin-top:4px" },
+          el("span", {}, q.name), el("span", { class: "cg-dim" }, `${q.used} / ${q.limit}`)));
+        card.append(el("div", { class: "cg-bar", style: "margin:3px 0 2px" },
+          el("div", { style: `width:${pct}%${pct >= 90 ? ";background:#ef5350" : ""}` })));
+      }
+      card.append(el("div", { style: "margin-top:6px" }, el("span", { class: "cg-dim" }, "Flow 积分 "), el("span", { class: "cg-big", style: "font-size:inherit" }, `${u.credits}`)));
+    }
   } else card.append(el("div", { class: "cg-err" }, (d.error || "不可用").slice(0, 120)));
   return card;
 }

@@ -350,6 +350,11 @@ def status() -> dict:
                          "key": bool(api_key()), "base": base_url()})
         if not api_key():
             out["error"] = "未配置 API Key"
+        else:
+            try:
+                out["flow"]["usage"] = get_json("/v1/usage")
+            except CloudGenError:
+                pass  # 服务端还没有 /v1/usage（未更新）时侧边栏只显示账号数
     except Exception as exc:  # noqa: BLE001
         out["error"] = str(exc)
     return out

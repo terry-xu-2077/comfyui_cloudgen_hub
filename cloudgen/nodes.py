@@ -621,6 +621,10 @@ def balances_text(items: list[dict]) -> str:
             f = d.get("flow") or {}
             lines.append(f"Flow2API：{'在线' if d.get('ok') else d.get('error', '不可用')}" +
                          (f"，可用账号 {f.get('active', 0)}/{f.get('total', 0)}" if f else ""))
+            u = f.get("usage")
+            if u:
+                lines.append("　今日图片 " + "，".join(f"{q['name']} {q['used']}/{q['limit']}" for q in u["image_daily"])
+                             + f"；Flow 积分 {u['credits']}")
             continue
         if d.get("ok") and d.get("balance_source") == "none":
             s = f"{d['name']}：余额未录入（接口不提供，在 ⚙ 配置 → 套餐 里填）"
