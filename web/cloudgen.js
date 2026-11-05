@@ -466,15 +466,12 @@ async function tabAccount(body) {
   const fbIn = el("input", { value: cfg.flow_base_url || "", placeholder: "http://IP:端口" });
   const fkIn = el("input", { type: "password", placeholder: cfg.flow_key_set ? "已设置（留空不修改）" : "Flow2API 的 API Key" });
   const flowMsg = el("span", { class: "cg-dim" });
-  const swIn = el("input", { type: "checkbox" }); swIn.checked = cfg.flow_swap_43 !== false;
   body.append(el("div", { class: "cg-sec" }, el("h4", {}, "Flow2API", el("span", { class: "cg-dim" }, cfg.flow_key_set ? "已配置" : "未配置")),
     el("div", { class: "cg-dim", style: "margin-bottom:8px" }, "自建的 Flow2API 服务（Google Flow：Nano Banana / Veo 3.1）"),
     el("div", { class: "cg-grid" }, el("span", {}, "服务地址"), fbIn, el("span", {}, "API Key"), fkIn),
-    el("label", { class: "cg-dim", style: "display:flex;gap:6px;align-items:center;margin-top:6px" }, swIn,
-      "对调 4:3 / 3:4（Flow2API 目前把这两个比例发反了；它修好后取消勾选）"),
     el("div", { class: "cg-row" }, el("button", {
       class: "cg-btn primary", onclick: async () => {
-        const b = { flow_base_url: fbIn.value.trim(), flow_swap_43: swIn.checked };
+        const b = { flow_base_url: fbIn.value.trim() };
         if (fkIn.value.trim()) b.flow_api_key = fkIn.value.trim();
         await getJSON("/cloudgen/config", { method: "POST", body: JSON.stringify(b) });
         delete modelCache["flow:image"]; delete modelCache["flow:video"];
@@ -483,8 +480,8 @@ async function tabAccount(body) {
         refreshAllNodes();
       }
     }, "保存并测试"),
-      el("button", { class: "cg-btn", title: "https://github.com/TheSmallHanCat/flow2api",
-        onclick: () => window.open("https://github.com/TheSmallHanCat/flow2api", "_blank") }, "Flow2API仓库"),
+      el("button", { class: "cg-btn", title: "https://github.com/terry-xu-2077/flow2api",
+        onclick: () => window.open("https://github.com/terry-xu-2077/flow2api", "_blank") }, "Flow2API仓库"),
       flowMsg)));
 
   const lt = cfg.libtv || {};

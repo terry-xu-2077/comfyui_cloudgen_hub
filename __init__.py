@@ -64,7 +64,7 @@ def _register_routes():
         return ok({"xyq_configured": bool(ak), "xyq_key_masked": (ak[:5] + "…" + ak[-4:]) if len(ak) > 10 else ("已设置" if ak else ""),
                    "xyq_team_id": cfg.get("xyq_team_id", ""), "libtv": libtv_auth.status(), "lovart": lovart_auth.status(),
                    "libtv_project_id": cfg.get("libtv_project_id", ""),
-                   "flow_base_url": flow.base_url(), "flow_key_set": bool(flow.api_key()), "flow_swap_43": flow.swap_43()})
+                   "flow_base_url": flow.base_url(), "flow_key_set": bool(flow.api_key())})
 
     @routes.post("/cloudgen/config")
     async def set_config(req):
@@ -78,8 +78,6 @@ def _register_routes():
         for k in ("flow_base_url", "flow_api_key"):
             if k in body:
                 patch[k] = str(body[k] or "").strip() or None
-        if "flow_swap_43" in body:
-            patch["flow_swap_43"] = bool(body["flow_swap_43"])
         if "libtv_project_id" in body:
             patch["libtv_project_id"] = str(body["libtv_project_id"] or "").strip() or None
         util.save_config(patch)

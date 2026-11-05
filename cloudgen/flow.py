@@ -158,17 +158,8 @@ def find_model(kind: str, name: str) -> dict:
     raise CloudGenError(f"Flow2API 没有模型「{name}」，可用：{', '.join(m['name'] for m in get_models(kind))}")
 
 
-def swap_43() -> bool:
-    """Flow2API（截至 2026-10）把 4:3 / 3:4 发给 Flow 的编号写反了：要 3:4 出 4:3，反之亦然。
-    默认对调着发；等 Flow2API 修好后在配置里关掉（config.json: flow_swap_43=false）。"""
-    v = util.load_config().get("flow_swap_43")
-    return True if v is None else bool(v)
-
-
 def image_model_id(m: dict, ratio: str, resolution: str) -> str:
     aspect = ASPECT.get(ratio or "16:9", "landscape")
-    if swap_43() and aspect in ("four-three", "three-four"):
-        aspect = "three-four" if aspect == "four-three" else "four-three"
     size = (resolution or "1K").upper()
     mid = m["key"] + f"-{aspect}" + ("" if size == "1K" else f"-{size.lower()}")
     if mid not in m["ids"]:
