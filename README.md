@@ -1,6 +1,6 @@
 # ComfyUI CloudGen Hub：云端生成（小云雀 + LibTV + Lovart + Flow2API）
 
-一组 ComfyUI 节点，把 **小云雀（xyq.jianying.com）** 和 **LibTV（mcp.liblib.tv）** 的图片 / 视频生成接进工作流，并在侧边栏显示两边的剩余积分。
+一组 ComfyUI 节点，把 **小云雀（xyq.jianying.com）**、**LibTV（mcp.liblib.tv）**、**Lovart（lovart.ai）** 的图片 / 视频生成接进工作流（另支持自建的 Flow2API），并在侧边栏显示各平台的剩余积分。
 
 ## 节点（分类：☁️ 云端生成）
 
@@ -32,7 +32,7 @@
 
 **Lovart**：点侧边栏「⚙ 配置 → 账户」里的「Lovart 授权」，在浏览器登录并同意即可。OAuth 2.1 + PKCE，使用预注册客户端 `codex-lovart`，回调地址 `127.0.0.1:8766`（占用时在 `config.json` 加 `"lovart_oauth_port"`）。token 自动续期，凭据存在 `lovart_credentials.json`（不入库）。模型参数 schema 可访问 `/cloudgen/lovart/describe?model=模型名` 查看。
 
-**LibTV**：点侧边栏的「LibTV 授权」，浏览器会打开 LibTV 授权页，微信扫码即可。走的是 OAuth 2.1 + PKCE，回调地址 `127.0.0.1:8765`。token 会自动续期。如果端口被占用，在 `config.json` 里加 `"libtv_oauth_port": 8766`。如果这台机器上已经装过 dsh-libtv（`~/.libtv/credentials.json`），会直接复用它的授权。
+**LibTV**：点侧边栏的「LibTV 授权」，浏览器会打开 LibTV 授权页，微信扫码即可。走的是 OAuth 2.1 + PKCE，回调地址 `127.0.0.1:8765`。token 会自动续期。如果端口被占用，在 `config.json` 里加 `"libtv_oauth_port": 8766`。
 
 凭据保存在本包目录的 `config.json` 和 `libtv_credentials.json`，已写进 `.gitignore`。
 
@@ -52,3 +52,11 @@ LibTV 的工具参数由服务端 `tools/list` 下发。节点按工具的 input
 
 
 > 侧边栏只显示已配置的平台（小云雀有 Access Key、LibTV / Lovart 已授权）；未配置的不会出现在积分卡片、套餐和积分价格页里。
+
+## 使用须知
+
+- 本包是第三方非官方集成，与各平台无隶属关系；生成会消耗你在各平台的积分/额度，费用自负，并需遵守各平台的服务条款。
+- 授权/配置时会在本机 `127.0.0.1` 的 8765（LibTV）、8766（Lovart）端口临时监听 OAuth 回调，并自动打开浏览器；授权完成即关闭。
+- 凭据以明文 JSON 保存在本包目录（`config.json`、`libtv_credentials.json`、`lovart_credentials.json`），已在 `.gitignore` 中排除；本包不会读取其它程序的凭据文件。
+- Lovart 使用其为 MCP 客户端预注册的公共 OAuth 客户端 `codex-lovart`，属于实验性支持；如平台调整，可通过环境变量 `LOVART_OAUTH_CLIENT_ID` 换成自己申请的 client_id。
+- Flow2API 需要自建服务并填写服务地址，没有默认地址。

@@ -1,0 +1,16 @@
+[project]
+name = "comfyui_cloudgen_hub"
+description = "Cloud image/video generation nodes for ComfyUI: Xiaoyunque (小云雀), LibTV, Lovart and self-hosted Flow2API, with a sidebar credit panel."
+version = "0.1.0"
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/terry-xu-2077/comfyui_cloudgen_hub"
+
+[tool.comfy]
+# PublisherId 需要先在 https://registry.comfy.org 创建发布者后填入（即你的 publisher id，不带 @）
+PublisherId = ""
+DisplayName = "CloudGen Hub"

@@ -1,6 +1,6 @@
 """Flow2API（Google Flow / VideoFX 的 OpenAI 兼容网关，用户自建）。
 
-配置（config.json）：flow_base_url（默认 http://192.168.100.123:8866）、flow_api_key。
+配置（config.json）：flow_base_url（自建服务地址，无默认值）、flow_api_key。
 接口：
   GET  /v1/models                 模型列表（Bearer api_key）
   POST /v1/chat/completions       生图/生视频，stream=true，参考图用 image_url 的 base64 data URL
@@ -19,11 +19,18 @@ import urllib.request
 from . import util
 from .util import CloudGenError
 
-DEFAULT_BASE = "http://192.168.100.123:8866"
+DEFAULT_BASE = ""
 
 
 def base_url() -> str:
     return (util.load_config().get("flow_base_url") or DEFAULT_BASE).rstrip("/")
+
+
+def _need_base() -> str:
+    b = base_url()
+    if not b:
+        raise CloudGenError("未配置 Flow2API 服务地址：在侧边栏「⚙ 配置 → 账户 → Flow2API」填写")
+    return b
 
 
 def api_key() -> str:
@@ -38,7 +45,7 @@ def _headers(extra: dict | None = None) -> dict:
 
 
 def get_json(path: str, auth: bool = True, timeout: float = 20):
-    status, _, data = util.http_request(base_url() + path, headers=_headers() if auth else None, timeout=timeout)
+    status, _, data = util.http_request(_need_base() + path, headers=_headers() if auth else None, timeout=timeout)
     try:
         body = json.loads(data.decode("utf-8")) if data else None
     except (UnicodeDecodeError, json.JSONDecodeError):
@@ -202,7 +209,7 @@ def _fix_url(u: str) -> str:
     from urllib.parse import urlsplit
     p = urlsplit(u)
     if p.path.startswith("/tmp/"):
-        return base_url() + p.path + (f"?{p.query}" if p.query else "")
+        return _need_base() + p.path + (f"?{p.query}" if p.query else "")
     return u
 
 
@@ -226,7 +233,7 @@ def chat_generate(model_id: str, prompt: str, images: list[bytes], node_id=None,
         content = prompt
     body = json.dumps({"model": model_id, "messages": [{"role": "user", "content": content}], "stream": True},
                       ensure_ascii=False).encode("utf-8")
-    req = urllib.request.Request(base_url() + "/v1/chat/completions", data=body, method="POST",
+    req = urllib.request.Request(_need_base() + "/v1/chat/completions", data=body, method="POST",
                                  headers=_headers({"Content-Type": "application/json", "Accept": "text/event-stream",
                                                    "User-Agent": util.UA}))
     text, last_progress, errors = "", "", []
@@ -284,7 +291,7 @@ def chat_generate(model_id: str, prompt: str, images: list[bytes], node_id=None,
 def fetch(url: str, timeout: float = 600) -> bytes:
     if url.startswith("data:"):
         return base64.b64decode(url.split(",", 1)[1])
-    hdrs = _headers() if url.startswith(base_url()) else None
+    hdrs = _headers() if base_url() and url.startswith(base_url()) else None
     status, _, data = util.http_request(url, headers=hdrs, timeout=timeout)
     if status >= 400:
         raise CloudGenError(f"下载 Flow2API 结果失败 HTTP {status}: {url[:120]}")

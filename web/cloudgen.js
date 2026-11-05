@@ -463,7 +463,7 @@ async function tabAccount(body) {
       }
     }, "保存"), xyqMsg)));
 
-  const fbIn = el("input", { value: cfg.flow_base_url || "http://192.168.100.123:8866", placeholder: "http://IP:端口" });
+  const fbIn = el("input", { value: cfg.flow_base_url || "", placeholder: "http://IP:端口" });
   const fkIn = el("input", { type: "password", placeholder: cfg.flow_key_set ? "已设置（留空不修改）" : "Flow2API 的 API Key" });
   const flowMsg = el("span", { class: "cg-dim" });
   const swIn = el("input", { type: "checkbox" }); swIn.checked = cfg.flow_swap_43 !== false;

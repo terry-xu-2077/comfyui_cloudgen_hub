@@ -4,8 +4,7 @@
   元数据   https://mcp.liblib.tv/.well-known/oauth-authorization-server
   资源     https://mcp.liblib.tv/.well-known/oauth-protected-resource
   回调     http://127.0.0.1:<port>/callback （默认 8765）
-凭据写在节点包目录 libtv_credentials.json（与 dsh-libtv 的 ~/.libtv/credentials.json 格式兼容，
-若本包里没有而 ~/.libtv 下有，会直接复用）。
+凭据只写在节点包目录 libtv_credentials.json（不读取其它程序的凭据文件）。
 """
 from __future__ import annotations
 
@@ -28,7 +27,6 @@ MCP_URL = os.environ.get("LIBTV_MCP_URL", "https://mcp.liblib.tv/mcp")
 SCOPES = ["libtv:account:read", "libtv:project:read", "libtv:project:write", "libtv:media:write",
           "libtv:task:write", "libtv:export:write"]
 CRED_FILE = os.path.join(util.PACK_DIR, "libtv_credentials.json")
-LEGACY_CRED = os.path.join(os.path.expanduser("~"), ".libtv", "credentials.json")
 CLIENT_NAME = "ComfyUI LibTV nodes"
 
 _lock = threading.Lock()
@@ -44,15 +42,12 @@ def redirect_uri() -> str:
 
 
 def load_creds() -> dict:
-    for p in (CRED_FILE, LEGACY_CRED):
-        try:
-            with open(p, "r", encoding="utf-8") as fp:
-                data = json.load(fp)
-                if isinstance(data, dict) and (p == CRED_FILE or data.get("tokens")):
-                    return data
-        except (OSError, json.JSONDecodeError):
-            continue
-    return {}
+    try:
+        with open(CRED_FILE, "r", encoding="utf-8") as fp:
+            data = json.load(fp)
+            return data if isinstance(data, dict) else {}
+    except (OSError, json.JSONDecodeError):
+        return {}
 
 
 def save_creds(creds: dict):
@@ -210,7 +205,7 @@ def start_login(open_browser: bool = True) -> str:
                 raise CloudGenError("授权超时（10 分钟未完成）")
             if result.get("error"):
                 raise CloudGenError(f"LibTV 授权失败：{result['error']}")
-            creds2 = load_creds() if os.path.exists(CRED_FILE) else creds
+            creds2 = load_creds() or creds
             tok = _token_request({"grant_type": "authorization_code", "code": result["code"],
                                   "redirect_uri": redirect_uri(), "client_id": creds2["client_id"],
                                   "code_verifier": verifier, "resource": resource(),
@@ -238,8 +233,6 @@ def _refresh(creds: dict) -> str:
                               "resource": resource(), "client_secret": creds.get("client_secret")})
     except CloudGenError as exc:
         raise CloudGenError(f"LibTV 授权已失效，请重新授权（{exc}）") from exc
-    if creds.get("redirect_uri") and not os.path.exists(CRED_FILE):
-        save_creds(creds)
     return _store_tokens(creds, tok)["access_token"]
 
 
