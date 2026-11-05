@@ -311,7 +311,7 @@ function ensureEditor(node) {
   hideWidget(w);
   node.__cgPE = { el, wrap, state, view, dom, raw: false, rendering: false };
   refresh(node, true);
-  node.setSize?.([Math.max(node.size[0], 380), node.computeSize?.()[1] ?? node.size[1]]);
+  node.setSize?.([Math.max(node.size[0], 380), Math.max(node.size[1], node.computeSize?.()[1] ?? 0)]);
   return true;
 }
 function installSoon(node, n = 0) {
