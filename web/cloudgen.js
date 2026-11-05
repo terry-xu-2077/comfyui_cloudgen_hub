@@ -738,12 +738,19 @@ function syncVueNode(node, meta) {
   }
   const body = document.querySelector(`[data-testid="node-body-${id}"]`);
   if (body) {
-    let st = body.querySelector(":scope > .cg-vstatus");
-    const text = node.cloudgenStatus ? String(node.cloudgenStatus).split("\n").slice(0, 2).join("\n") : "";
+    // 状态文字放进节点底部那行（和「comfyui_cloudgen_hub」来源徽章同一行）；找不到这一行就放到节点底部
+    const badgeRow = body.querySelector(":scope > .mt-auto");
+    const target = badgeRow || body;
+    let st = body.querySelector(".cg-vstatus");
+    const text = node.cloudgenStatus ? String(node.cloudgenStatus).split("\n")[0] : "";
     if (!text) st?.remove();
     else {
-      if (!st) { st = document.createElement("div"); st.className = "cg-vstatus"; st.style.cssText = "padding:2px 10px 0;font-size:12px;color:#9fd3ff;white-space:pre-wrap;word-break:break-all;line-height:1.35"; body.appendChild(st); }
-      if (st.textContent !== text) st.textContent = text;
+      if (!st) {
+        st = document.createElement("div"); st.className = "cg-vstatus";
+        st.style.cssText = "min-width:0;font-size:12px;color:#9fd3ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:20px" + (badgeRow ? ";flex:1" : ";padding:2px 10px 0");
+      }
+      if (st.parentElement !== target) target.appendChild(st);
+      if (st.textContent !== text) { st.textContent = text; st.title = text; }
     }
   }
   return true;

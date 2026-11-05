@@ -194,26 +194,38 @@ def data_url(png_bytes: bytes) -> str:
     return f"data:{mime};base64," + base64.b64encode(data).decode()
 
 
-def image_ref(png_bytes: bytes) -> str:
+def image_ref(png_bytes: bytes) -> tuple[str, bool]:
     """参考图先上传到 Flow2API 换成 ref://素材ID；相同内容只上传一次，服务端已删除则重传。
-    服务端还没有 /v1/media/upload（未更新）时退回内嵌 data URL。"""
+    返回 (地址, 是否这次新上传)。服务端还没有 /v1/media/upload（未更新）时退回内嵌 data URL。"""
     key = f"flow:{base_url()}:{util.sha1(png_bytes)}"
     cached = util.asset_get(key)
     if cached:
         status, _, _ = util.http_request(f"{_need_base()}/v1/media/{cached}", method="HEAD", headers=_headers(), timeout=20)
         if status == 200:
-            return f"ref://{cached}"
+            return f"ref://{cached}", False
         util.asset_drop(key)
     status, _, data = util.http_request(_need_base() + "/v1/media/upload", method="POST",
                                         headers=_headers({"Content-Type": "application/octet-stream"}),
                                         body=png_bytes, timeout=300)
     if status in (404, 405):
-        return data_url(png_bytes)
+        return data_url(png_bytes), True
     if status >= 400:
         raise CloudGenError(f"Flow2API 上传参考图失败 HTTP {status}：{data.decode('utf-8', 'replace')[:300]}")
     upload_id = json.loads(data.decode("utf-8"))["id"]
     util.asset_put(key, upload_id, "flow-ref")
-    return f"ref://{upload_id}"
+    return f"ref://{upload_id}", True
+
+
+def image_refs(images: list[bytes], node_id=None) -> list[str]:
+    """把参考图逐张换成可引用的地址，并在节点上显示上传进度。"""
+    n, out = len(images), []
+    if n:
+        util.send_progress(node_id, f"上传 {n} 张参考图片…")
+    for i, b in enumerate(images, 1):
+        ref, fresh = image_ref(b)
+        util.send_progress(node_id, f"已上传第 {i}/{n} 张图片" if fresh else f"第 {i}/{n} 张图片已上传过，直接复用")
+        out.append(ref)
+    return out
 
 
 URL_RE = re.compile(r"""(?:https?://[^\s"'<>()\]]+|data:(?:image|video)/[\w.+-]+;base64,[A-Za-z0-9+/=]+)""")
@@ -235,7 +247,7 @@ def _friendly_progress(line: str) -> str:
     return line
 
 
-def chat_generate(model_id: str, prompt: str, images: list[bytes], node_id=None, timeout: float = 1200,
+def chat_generate(model_id: str, prompt: str, images: list[str], node_id=None, timeout: float = 1200,
                   quiet: bool = False) -> dict:
     """quiet=True：并发时由调用方统一显示进度，这里不刷节点进度。"""
     """POST /v1/chat/completions（stream），返回 {"text", "urls"}。进度文字转发到节点上。"""
@@ -243,7 +255,7 @@ def chat_generate(model_id: str, prompt: str, images: list[bytes], node_id=None,
         raise CloudGenError("Flow2API 还没配置 API Key")
     if images:
         content: list | str = [{"type": "text", "text": prompt}] + [
-            {"type": "image_url", "image_url": {"url": image_ref(b)}} for b in images]
+            {"type": "image_url", "image_url": {"url": u}} for u in images]
     else:
         content = prompt
     body = json.dumps({"model": model_id, "messages": [{"role": "user", "content": content}], "stream": True},

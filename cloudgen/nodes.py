@@ -711,9 +711,10 @@ class FlowImage(_ListInput):
         jid = _flow_job("image", m["name"], prompt, jobs.make_key("flow", "image", mid, prompt, count, seed, len(refs)))
         blobs, urls = [], []
         try:
+            ref_urls = flow.image_refs(refs, unique_id)
             for n in range(max(1, count)):
-                util.send_progress(unique_id, f"Flow {m['name']} {ratio} {resolution}" + (f"（第 {n + 1}/{count} 张）" if count > 1 else "") + " …")
-                out = flow.chat_generate(mid, text, refs, unique_id, timeout=900)
+                util.send_progress(unique_id, "生成中" + (f"（第 {n + 1}/{count} 张）" if count > 1 else "") + "…")
+                out = flow.chat_generate(mid, text, ref_urls, unique_id, timeout=900)
                 u = out["urls"][-1]
                 blobs.append(flow.fetch(u)); urls.append(u)
         except CloudGenError as exc:
@@ -724,7 +725,7 @@ class FlowImage(_ListInput):
         jobs.update(jid, status="done", urls=urls)
         info = "\n".join([f"Flow2API · {m['name']} · {mid} · {len(blobs)} 张"] + [u for u in urls if not u.startswith("data:")])
         util.send_progress(unique_id, f"完成 · {len(blobs)} 张")
-        return {"ui": {"cloudgen_info": [info]}, "result": (util.images_from_bytes(blobs), info)}
+        return {"ui": {"cloudgen_info": [f"完成 · {len(blobs)} 张"]}, "result": (util.images_from_bytes(blobs), info)}
 
 
 class FlowVideo(_ListInput):
@@ -785,9 +786,10 @@ class FlowVideo(_ListInput):
         else:
             mid = flow.video_model_id(m, typ, int(duration), ratio)
         jid = _flow_job("video", m["name"], prompt, jobs.make_key("flow", "video", mid, prompt, seed, len(imgs)))
-        util.send_progress(unique_id, f"Flow {m['name']} · {mid} 提交中…")
         try:
-            out = flow.chat_generate(mid, _xyq_mentions(prompt.strip()), imgs, unique_id, timeout=1800)
+            ref_urls = flow.image_refs(imgs, unique_id)
+            util.send_progress(unique_id, "生成中…")
+            out = flow.chat_generate(mid, _xyq_mentions(prompt.strip()), ref_urls, unique_id, timeout=1800)
             vids = [u for u in out["urls"] if re.search(r"\.(mp4|webm|mov)(\?|$)|video", u, re.I)] or out["urls"]
             data = flow.fetch(vids[-1], timeout=900)
         except CloudGenError as exc:
@@ -797,7 +799,7 @@ class FlowVideo(_ListInput):
         jobs.update(jid, status="done", urls=[vids[-1]])
         info = f"Flow2API · {m['name']} · {mid}\n{path}\n{vids[-1] if not vids[-1].startswith('data:') else ''}".strip()
         util.send_progress(unique_id, "完成")
-        return {"ui": {"cloudgen_info": [info]}, "result": (util.video_object(path), path, info)}
+        return {"ui": {"cloudgen_info": ["完成"]}, "result": (util.video_object(path), path, info)}
 
 
 NODE_CLASS_MAPPINGS = {
