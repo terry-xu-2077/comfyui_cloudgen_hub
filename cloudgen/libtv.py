@@ -23,8 +23,11 @@ TOOLS_DUMP = os.path.join(util.PACK_DIR, "libtv_tools.json")
 
 
 class MCPClient:
-    def __init__(self, url: str = libtv_auth.MCP_URL):
+    def __init__(self, url: str = libtv_auth.MCP_URL, auth=libtv_auth, label: str = "LibTV", dump: str | None = None):
         self.url = url
+        self.auth = auth
+        self.label = label
+        self.dump = dump or TOOLS_DUMP
         self.session_id: str | None = None
         self.protocol = PROTOCOL
         self._lock = threading.Lock()
@@ -33,7 +36,7 @@ class MCPClient:
 
     # -------------------------------------------------- transport
     def _post(self, payload: dict, timeout: float, retry_auth: bool = True) -> tuple[int, dict, bytes]:
-        token = libtv_auth.access_token()
+        token = self.auth.access_token()
         headers = {"Content-Type": "application/json", "Accept": "application/json, text/event-stream",
                    "Authorization": f"Bearer {token}", "MCP-Protocol-Version": self.protocol}
         if self.session_id:
@@ -41,7 +44,7 @@ class MCPClient:
         status, hdrs, data = util.http_request(self.url, method="POST", headers=headers,
                                                body=json.dumps(payload).encode("utf-8"), timeout=timeout)
         if status == 401 and retry_auth:
-            libtv_auth.access_token(force=True)
+            self.auth.access_token(force=True)
             return self._post(payload, timeout, retry_auth=False)
         return status, hdrs, data
 
@@ -79,15 +82,15 @@ class MCPClient:
             self.session_id = None
             return self._rpc(method, params, timeout, _reinit=False)
         if status >= 400:
-            raise CloudGenError(f"LibTV MCP {method} HTTP {status}: {data[:300]!r}")
+            raise CloudGenError(f"{self.label} MCP {method} HTTP {status}: {data[:300]!r}")
         if method == "initialize" and hdrs.get("mcp-session-id"):
             self.session_id = hdrs["mcp-session-id"]
         msg = self._parse(hdrs, data, rid)
         if msg is None:
-            raise CloudGenError(f"LibTV MCP {method} 无响应体")
+            raise CloudGenError(f"{self.label} MCP {method} 无响应体")
         if "error" in msg:
             err = msg["error"]
-            raise CloudGenError(f"LibTV MCP {method} 错误：{err.get('message')} {json.dumps(err.get('data'), ensure_ascii=False)[:300] if err.get('data') else ''}")
+            raise CloudGenError(f"{self.label} MCP {method} 错误：{err.get('message')} {json.dumps(err.get('data'), ensure_ascii=False)[:300] if err.get('data') else ''}")
         return msg["result"]
 
     def _initialize(self):
@@ -117,7 +120,7 @@ class MCPClient:
                     break
             self._tools, self._tools_at = tools, time.time()
             try:
-                with open(TOOLS_DUMP, "w", encoding="utf-8") as fp:
+                with open(self.dump, "w", encoding="utf-8") as fp:
                     json.dump(tools, fp, ensure_ascii=False, indent=2)
             except OSError:
                 pass
@@ -133,7 +136,7 @@ class MCPClient:
         res = self._rpc("tools/call", {"name": name, "arguments": args}, timeout=timeout)
         parsed = parse_tool_result(res)
         if isinstance(res, dict) and res.get("isError"):
-            raise CloudGenError(f"LibTV 工具 {name} 报错：{json.dumps(parsed, ensure_ascii=False)[:500]}")
+            raise CloudGenError(f"{self.label} 工具 {name} 报错：{json.dumps(parsed, ensure_ascii=False)[:500]}")
         return parsed
 
 

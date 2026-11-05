@@ -5,7 +5,7 @@ import json
 import re
 import time
 
-from . import flow, libtv, plans, prices, util, xyq
+from . import flow, libtv, libtv_auth, lovart, plans, prices, util, xyq
 from .util import CloudGenError
 
 CAT = "☁️ 云端生成"
@@ -461,21 +461,151 @@ class LibTVVideo(_ListInput):
         return {"ui": {"cloudgen_info": [info]}, "result": (util.video_object(path), path, info)}
 
 
+# ======================================================================= Lovart
+LOVART_RATIOS = [DEFAULT, "1:1", "16:9", "9:16", "4:3", "3:4", "3:2", "2:3", "21:9"]
+LOVART_VID_RATIOS = [DEFAULT, "16:9", "9:16", "1:1", "4:3", "3:4", "21:9"]
+
+
+def _lovart_balance():
+    return _balance_safe(lovart.account)
+
+
+class LovartImage(_ListInput):
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "model": (lovart.cached_model_names("image"), {"default": DEFAULT, "tooltip": "默认=Lovart 当前的默认图片模型"}),
+                "prompt": ("STRING", {"multiline": True, "default": ""}),
+                "aspect_ratio": (LOVART_RATIOS, {"default": DEFAULT}),
+                "count": ("INT", {"default": 1, "min": 1, "max": 8}),
+                "seed": ("INT", {"default": 0, "min": 0, "max": 0x7FFFFFFF, "advanced": True,
+                                 "tooltip": "不传给服务端。改 seed = 新任务（重新生成并扣费）；参数都不变时，中断后再运行会续接原任务、不重复扣费"}),
+            },
+            "optional": {
+                "ref_images": ("IMAGE", {"tooltip": "参考图（可多张 batch 或列表），会先上传到 Lovart"}),
+                "extra_json": ("STRING", {"default": "", "multiline": True, "advanced": True,
+                                          "tooltip": "模型专属参数 JSON（作为 params 传入），字段名见 describe_model，如 {\"quality\": \"high\"}"}),
+            },
+            "hidden": {"unique_id": "UNIQUE_ID"},
+        }
+
+    RETURN_TYPES = ("IMAGE", "STRING")
+    RETURN_NAMES = ("images", "info")
+    CATEGORY = CAT
+
+    @classmethod
+    def VALIDATE_INPUTS(cls, model):
+        return True
+
+    def run(self, model, prompt, aspect_ratio, count, seed, ref_images=None, extra_json="", unique_id=None):
+        if not prompt.strip():
+            raise CloudGenError("prompt 不能为空")
+        params = _parse_extra(extra_json)
+        name = lovart.resolve_model("image", model)
+        refs = lovart.refs_from_images(ref_images, unique_id)
+        args = {"prompt": prompt.strip(), "aspect_ratio": _opt(aspect_ratio), "n": count, "ref_images": refs, "params": params}
+        before = _lovart_balance()
+        out = lovart.generate("image", name, args, prompt, unique_id, seed=seed)
+        arts = [a for a in out["artifacts"] if a.get("type", "image") == "image"] or out["artifacts"]
+        blobs = [util.download(a["url"]) for a in arts]
+        for b in blobs:
+            util.save_blob(b, "cloudgen", "lovart", ".png")
+        after = _lovart_balance()
+        _record("lovart", "image", name or DEFAULT, aspect_ratio, before, after, None, count, out.get("job_id"))
+        cost = _cost_line(before, after)
+        info = "\n".join(x for x in [f"Lovart · {name or DEFAULT} · {len(blobs)} 张", cost,
+                                     f"task_ids={','.join(out['task_ids'])}", out["raw"].get("edit_url") or ""] if x)
+        util.send_progress(unique_id, cost or "完成")
+        return {"ui": {"cloudgen_info": [info]}, "result": (util.images_from_bytes(blobs), info)}
+
+
+class LovartVideo(_ListInput):
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "model": (lovart.cached_model_names("video"), {"default": DEFAULT, "tooltip": "默认=Lovart 当前的默认视频模型（视频模型多数需要 Lovart 会员）"}),
+                "prompt": ("STRING", {"multiline": True, "default": ""}),
+                "aspect_ratio": (LOVART_VID_RATIOS, {"default": DEFAULT}),
+                "duration": ("INT", {"default": 5, "min": 0, "max": 60, "tooltip": "秒，0=模型默认；可选值因模型而异"}),
+                "seed": ("INT", {"default": 0, "min": 0, "max": 0x7FFFFFFF, "advanced": True,
+                                 "tooltip": "不传给服务端。改 seed = 新任务（重新生成并扣费）"}),
+            },
+            "optional": {
+                "first_frame": ("IMAGE", {"tooltip": "首帧（图生视频）"}),
+                "last_frame": ("IMAGE", {"tooltip": "尾帧（需同时接首帧，模型需支持首尾帧）"}),
+                "ref_images": ("IMAGE", {"tooltip": "主体/风格参考图"}),
+                "extra_json": ("STRING", {"default": "", "multiline": True, "advanced": True,
+                                          "tooltip": "模型专属参数 JSON（作为 params 传入），字段名见 describe_model"}),
+            },
+            "hidden": {"unique_id": "UNIQUE_ID"},
+        }
+
+    RETURN_TYPES = ("VIDEO", "STRING", "STRING")
+    RETURN_NAMES = ("video", "video_path", "info")
+    CATEGORY = CAT
+
+    @classmethod
+    def VALIDATE_INPUTS(cls, model):
+        return True
+
+    def run(self, model, prompt, aspect_ratio, duration, seed, first_frame=None, last_frame=None,
+            ref_images=None, extra_json="", unique_id=None):
+        if not prompt.strip() and first_frame is None:
+            raise CloudGenError("prompt 和首帧至少要有一个")
+        if last_frame is not None and first_frame is None:
+            raise CloudGenError("接了尾帧就必须同时接首帧")
+        params = _parse_extra(extra_json)
+        name = lovart.resolve_model("video", model)
+        start = lovart.upload_frame(first_frame, "first.png")
+        end = lovart.upload_frame(last_frame, "last.png")
+        refs = [] if start else lovart.refs_from_images(ref_images, unique_id)
+        args = {"prompt": prompt.strip(), "aspect_ratio": _opt(aspect_ratio), "duration": duration or None,
+                "first_frame": start, "last_frame": end, "ref_images": refs, "params": params}
+        before = _lovart_balance()
+        out = lovart.generate("video", name, args, prompt, unique_id, seed=seed)
+        vids = [a for a in out["artifacts"] if a.get("type") == "video"] or out["artifacts"]
+        path = util.save_blob(util.download(vids[0]["url"], timeout=900), "cloudgen", "lovart", ".mp4")
+        after = _lovart_balance()
+        _record("lovart", "video", name or DEFAULT, aspect_ratio, before, after, duration or None, 1, out.get("job_id"))
+        cost = _cost_line(before, after)
+        info = "\n".join(x for x in [f"Lovart · {name or DEFAULT}", cost, path,
+                                     f"task_ids={','.join(out['task_ids'])}", out["raw"].get("edit_url") or ""] if x)
+        util.send_progress(unique_id, cost or "完成")
+        return {"ui": {"cloudgen_info": [info]}, "result": (util.video_object(path), path, info)}
+
+
+
 # ======================================================================= 积分
+def _configured_providers() -> list[tuple[str, str, object]]:
+    """只返回已配置的平台（小云雀有 Access Key、LibTV / Lovart 已授权），未配置的不在侧边栏出现。"""
+    items = []
+    if xyq.access_key():
+        items.append(("xyq", "小云雀", xyq.get_balance))
+    if libtv_auth.status()["authorized"]:
+        items.append(("libtv", "LibTV", libtv.account))
+    if lovart.configured():
+        items.append(("lovart", "Lovart", lovart.account))
+    return items
+
+
 def all_balances() -> list[dict]:
     out = []
-    for name, fn in (("小云雀", xyq.get_balance), ("LibTV", libtv.account)):
+    for prov, name, fn in _configured_providers():
         try:
             d = fn()
             d.pop("raw", None)
             out.append(d)
         except Exception as exc:  # noqa: BLE001
-            out.append({"provider": "xyq" if name == "小云雀" else "libtv", "name": name, "ok": False,
+            out.append({"provider": prov, "name": name, "ok": False,
                         "balance": "—", "expire": "", "error": str(exc), "extra": {}})
     flow_items = []
     if flow.api_key() or util.load_config().get("flow_base_url"):
         flow_items.append(flow.status())
     for d in out:
+        if d["provider"] not in ("xyq", "libtv"):
+            continue
         try:
             d["plan"] = plans.status(d["provider"], d.get("balance") if d.get("ok") else None)
         except Exception as exc:  # noqa: BLE001
@@ -675,6 +805,8 @@ NODE_CLASS_MAPPINGS = {
     "CloudGen_XYQ_Video": XYQVideo,
     "CloudGen_LibTV_Image": LibTVImage,
     "CloudGen_LibTV_Video": LibTVVideo,
+    "CloudGen_Lovart_Image": LovartImage,
+    "CloudGen_Lovart_Video": LovartVideo,
     "CloudGen_Credits": CloudCredits,
     "CloudGen_Flow_Image": FlowImage,
     "CloudGen_Flow_Video": FlowVideo,
@@ -684,7 +816,9 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "CloudGen_XYQ_Video": "小云雀 · 视频生成",
     "CloudGen_LibTV_Image": "LibTV · 图片生成",
     "CloudGen_LibTV_Video": "LibTV · 视频生成",
-    "CloudGen_Credits": "云端积分 · 小云雀 / LibTV",
+    "CloudGen_Lovart_Image": "Lovart · 图片生成",
+    "CloudGen_Lovart_Video": "Lovart · 视频生成",
+    "CloudGen_Credits": "云端积分 · 小云雀 / LibTV / Lovart",
     "CloudGen_Flow_Image": "Flow2API · 图片生成",
     "CloudGen_Flow_Video": "Flow2API · 视频生成",
 }

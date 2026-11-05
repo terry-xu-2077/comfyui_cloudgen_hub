@@ -1,10 +1,10 @@
-"""ComfyUI 云端生成节点包：小云雀（xyq.jianying.com）+ LibTV（mcp.liblib.tv）。"""
+"""ComfyUI 云端生成节点包：小云雀（xyq.jianying.com）+ LibTV（mcp.liblib.tv）+ Lovart（lgw.lovart.ai）。"""
 from __future__ import annotations
 
 import asyncio
 import json
 
-from .cloudgen import flow, jobs, libtv, libtv_auth, plans, prices, util, xyq
+from .cloudgen import flow, jobs, libtv, libtv_auth, lovart, lovart_auth, plans, prices, util, xyq
 from .cloudgen.nodes import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS, all_balances, balances_text
 
 WEB_DIRECTORY = "./web"
@@ -42,7 +42,7 @@ def _register_routes():
         provider = req.query.get("provider", "xyq")
         kind = req.query.get("kind", "image")
         refresh = req.query.get("refresh") == "1"
-        mod = {"xyq": xyq, "flow": flow}.get(provider, libtv)
+        mod = {"xyq": xyq, "flow": flow, "lovart": lovart}.get(provider, libtv)
         try:
             items = await run(lambda: mod.get_models(kind, refresh))
             return ok({"models": [_strip(m) for m in items]})
@@ -62,7 +62,7 @@ def _register_routes():
         cfg = util.load_config()
         ak = xyq.access_key()
         return ok({"xyq_configured": bool(ak), "xyq_key_masked": (ak[:5] + "…" + ak[-4:]) if len(ak) > 10 else ("已设置" if ak else ""),
-                   "xyq_team_id": cfg.get("xyq_team_id", ""), "libtv": libtv_auth.status(),
+                   "xyq_team_id": cfg.get("xyq_team_id", ""), "libtv": libtv_auth.status(), "lovart": lovart_auth.status(),
                    "libtv_project_id": cfg.get("libtv_project_id", ""),
                    "flow_base_url": flow.base_url(), "flow_key_set": bool(flow.api_key()), "flow_swap_43": flow.swap_43()})
 
@@ -196,6 +196,37 @@ def _register_routes():
         libtv_auth.logout()
         libtv._model_cache.clear()
         return ok({"ok": True})
+
+    @routes.post("/cloudgen/lovart/login")
+    async def lovart_login(_req):
+        try:
+            url = await run(lovart_auth.start_login)
+            return ok({"url": url})
+        except Exception as exc:  # noqa: BLE001
+            return err(exc)
+
+    @routes.post("/cloudgen/lovart/logout")
+    async def lovart_logout(_req):
+        lovart_auth.logout()
+        lovart._model_cache.clear()
+        return ok({"ok": True})
+
+    @routes.get("/cloudgen/lovart/describe")
+    async def lovart_describe(req):
+        """只读：查看 Lovart 某个模型的完整参数 schema，例 /cloudgen/lovart/describe?model=openai/gpt-image-2"""
+        try:
+            return ok(await run(lovart.describe_model, req.query.get("model", "")))
+        except Exception as exc:  # noqa: BLE001
+            return err(exc)
+
+    @routes.get("/cloudgen/lovart/tools")
+    async def lovart_tools(_req):
+        try:
+            tools = await run(lambda: lovart.client().tools(refresh=True))
+            return ok({"count": len(tools), "path": lovart.TOOLS_DUMP,
+                       "tools": [{"name": t.get("name"), "description": (t.get("description") or "")[:120]} for t in tools]})
+        except Exception as exc:  # noqa: BLE001
+            return err(exc)
 
     @routes.get("/cloudgen/libtv/probe")
     async def libtv_probe(_req):

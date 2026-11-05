@@ -10,7 +10,9 @@
 | 小云雀 · 视频生成 | VIDEO, video_path, info | 模型 / 模式（文生、参考、首尾帧、延长、编辑）/ 比例 / 分辨率 / 时长 / seed，可接首帧、尾帧、参考图、参考视频、音频 |
 | LibTV · 图片生成 | IMAGE, info | 模型 / 质量（自动·高·中·低）/ 宽高比（含 2k、4k）/ W×H / 张数，可接参考图或参考图 URL |
 | LibTV · 视频生成 | VIDEO, video_path, info | 模型 / 比例 / 分辨率 / 时长 / 音频 / seed，可接首帧、尾帧、参考图 |
-| 云端积分 · 小云雀 / LibTV | STRING | 在节点上直接显示两边的余额和到期时间 |
+| Lovart · 图片生成 | IMAGE, info | 模型（默认=Lovart 默认模型）/ 宽高比 / 张数，可接参考图；模型专属参数用 extra_json |
+| Lovart · 视频生成 | VIDEO, video_path, info | 模型 / 比例 / 时长，可接首帧、尾帧、参考图（视频模型多数需要 Lovart 会员） |
+| 云端积分 · 小云雀 / LibTV / Lovart | STRING | 在节点上直接显示两边的余额和到期时间 |
 
 - 模型下拉框和标题栏右上角的 **⚡积分** 都从服务端实时读取。切换模型后，比例、分辨率、时长等选项会跟着换成该模型支持的值。
 - 每次运行完，节点下方会显示 **本次实际消耗**（运行前后余额相减）和剩余积分。
@@ -27,6 +29,8 @@
 ## 配置
 
 **小云雀**：先登录 xyq.jianying.com，在顶部【CLI/API】→【API】里新建秘钥（Access Key），再填进侧边栏。也可以设置环境变量 `XYQ_ACCESS_KEY`。要用团队空间的积分，就填团队 ID。
+
+**Lovart**：点侧边栏「⚙ 配置 → 账户」里的「Lovart 授权」，在浏览器登录并同意即可。OAuth 2.1 + PKCE，使用预注册客户端 `codex-lovart`，回调地址 `127.0.0.1:8766`（占用时在 `config.json` 加 `"lovart_oauth_port"`）。token 自动续期，凭据存在 `lovart_credentials.json`（不入库）。模型参数 schema 可访问 `/cloudgen/lovart/describe?model=模型名` 查看。
 
 **LibTV**：点侧边栏的「LibTV 授权」，浏览器会打开 LibTV 授权页，微信扫码即可。走的是 OAuth 2.1 + PKCE，回调地址 `127.0.0.1:8765`。token 会自动续期。如果端口被占用，在 `config.json` 里加 `"libtv_oauth_port": 8766`。如果这台机器上已经装过 dsh-libtv（`~/.libtv/credentials.json`），会直接复用它的授权。
 
@@ -45,3 +49,6 @@ LibTV 的工具参数由服务端 `tools/list` 下发。节点按工具的 input
 
 - 小云雀：照搬官方 `pippit-tool-cli`（github.com/Pippit-dev/cli）的 `/api/biz/v1/skill/*` 接口与请求体
 - LibTV：Remote MCP `https://mcp.liblib.tv/mcp`，授权流程参考 dsh-libtv
+
+
+> 侧边栏只显示已配置的平台（小云雀有 Access Key、LibTV / Lovart 已授权）；未配置的不会出现在积分卡片、套餐和积分价格页里。

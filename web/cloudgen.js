@@ -6,6 +6,8 @@ const NODE_TYPES = {
   CloudGen_XYQ_Video: { provider: "xyq", kind: "video" },
   CloudGen_LibTV_Image: { provider: "libtv", kind: "image" },
   CloudGen_LibTV_Video: { provider: "libtv", kind: "video" },
+  CloudGen_Lovart_Image: { provider: "lovart", kind: "image" },
+  CloudGen_Lovart_Video: { provider: "lovart", kind: "video" },
   CloudGen_Flow_Image: { provider: "flow", kind: "image" },
   CloudGen_Flow_Video: { provider: "flow", kind: "video" },
 };
@@ -40,6 +42,7 @@ function setOptions(node, name, values, keepDefault = true) {
 async function applyModel(node, meta) {
   const mw = node.widgets?.find((w) => w.name === "model");
   if (!mw) return;
+  if (meta.provider === "lovart") return; // Lovart 的参数因模型而异，用 extra_json 传，不做联动
   const list = modelCache[`${meta.provider}:${meta.kind}`] || [];
   let m = list.find((x) => x.name === mw.value);
   if (!m) return;
@@ -109,7 +112,7 @@ async function initNode(node, meta, refresh = false) {
   try {
     const list = await loadModels(meta.provider, meta.kind, refresh);
     if (list.length) {
-      const names = list.map((m) => m.name);
+      const names = meta.provider === "lovart" ? [DEFAULT, ...list.map((m) => m.label)] : list.map((m) => m.name);
       mw.options.values = names;
       if (!names.includes(mw.value)) mw.value = names[0];
     }
@@ -405,7 +408,7 @@ async function jobsCard(refresh) {
           el("div", { style: "display:flex;align-items:center;gap:6px;min-width:0" },
             el("span", { class: "cg-dot", style: `background:${color};flex:none` }),
             el("span", { style: "white-space:nowrap;overflow:hidden;text-overflow:ellipsis" }, j.model || ""),
-            el("span", { class: "cg-dim", style: "flex:none" }, ({ xyq: "小云雀", libtv: "LibTV", flow: "Flow" })[j.provider] || j.provider)),
+            el("span", { class: "cg-dim", style: "flex:none" }, ({ xyq: "小云雀", libtv: "LibTV", lovart: "Lovart", flow: "Flow" })[j.provider] || j.provider)),
           el("span", { style: `flex:none;font-weight:600;color:${j.cost > 0 ? "#ffd75e" : "inherit"}` }, cost)),
         el("div", { class: "cg-dim", style: "padding-left:13px" }, `${(j.created || "").slice(5, 16)} · ${ST_LABEL[j.status] || j.status}`),
         detail);
@@ -518,6 +521,31 @@ async function tabAccount(body) {
       }, "导出诊断信息") : null),
     msg);
   body.append(sec);
+
+  const lv = cfg.lovart || {};
+  const lvMsg = el("div", { class: "cg-dim", style: "margin-top:6px;word-break:break-all" }, lv.login_error ? `上次授权失败：${lv.login_error}` : "");
+  body.append(el("div", { class: "cg-sec" }, el("h4", {}, "Lovart", el("span", { class: "cg-dim" }, lv.authorized ? `已授权${lv.token_expires ? " · token 至 " + lv.token_expires : ""}` : "未授权")),
+    el("div", { class: "cg-dim" }, "OAuth 授权，不需要 API Key：点按钮后在浏览器里登录 Lovart 并同意（视频模型多数需要 Lovart 会员）"),
+    el("div", { class: "cg-row" },
+      el("button", {
+        class: "cg-btn primary", onclick: async () => {
+          const d = await getJSON("/cloudgen/lovart/login", { method: "POST" });
+          if (d.error) { lvMsg.textContent = d.error; return; }
+          lvMsg.innerHTML = ""; lvMsg.append("浏览器没弹出就手动打开：", el("a", { href: d.url, target: "_blank" }, "授权链接"));
+          window.open(d.url, "_blank");
+          const timer = setInterval(async () => {
+            const c = await getJSON("/cloudgen/config");
+            if (c.lovart?.authorized && !c.lovart?.login_running) {
+              clearInterval(timer); delete modelCache["lovart:image"]; delete modelCache["lovart:video"];
+              refreshAllNodes(); body.innerHTML = ""; tabAccount(body);
+            }
+            else if (c.lovart?.login_error) { clearInterval(timer); lvMsg.textContent = c.lovart.login_error; }
+          }, 2000);
+          setTimeout(() => clearInterval(timer), 600000);
+        }
+      }, lv.authorized ? "重新授权" : "Lovart 授权"),
+      lv.authorized ? el("button", { class: "cg-btn", onclick: async () => { await getJSON("/cloudgen/lovart/logout", { method: "POST" }); delete modelCache["lovart:image"]; delete modelCache["lovart:video"]; body.innerHTML = ""; tabAccount(body); } }, "退出") : null),
+    lvMsg));
   await assetSection(body);
 }
 
@@ -535,10 +563,18 @@ async function assetSection(body) {
     el("div", { class: "cg-row" }, btn("libtv", "清空 LibTV 缓存"), btn("xyq", "清空小云雀缓存"), msg)));
 }
 
+async function configuredMap() {
+  const c = await getJSON("/cloudgen/config").catch(() => ({}));
+  return { xyq: !!c.xyq_configured, libtv: !!c.libtv?.authorized, lovart: !!c.lovart?.authorized };
+}
+
 async function tabPlans(body) {
   const data = await getJSON("/cloudgen/plans").catch(() => ({}));
+  const on = await configuredMap();
   body.append(el("div", { class: "cg-dim", style: "margin-bottom:10px" }, "到期日和重置日在两个网站的会员/积分页能看到。积分会在「重置日 + 重置时间」清零重发，例如 23 日 00:00 重置，就要在 22 日内用完。"));
-  for (const [prov, name] of [["xyq", "小云雀"], ["libtv", "LibTV"]]) {
+  const shown = [["xyq", "小云雀"], ["libtv", "LibTV"]].filter(([prov]) => on[prov]);
+  if (!shown.length) body.append(el("div", { class: "cg-dim" }, "还没有配置小云雀或 LibTV，请先在「账户」里配置。"));
+  for (const [prov, name] of shown) {
     const p = data[prov] || {};
     const f = {
       plan_name: el("input", { value: p.plan_name || "", placeholder: "如 个人高级版VIP" }),
@@ -597,8 +633,11 @@ async function dimOptions(provider, kind, m) {
 }
 
 async function tabPrices(body, group = 0) {
-  const [prov, kind, title] = PRICE_GROUPS[group];
-  const seg = el("div", { class: "cg-seg" }, PRICE_GROUPS.map((g, i) => el("div", { class: "cg-tab" + (i === group ? " on" : ""), onclick: () => { body.innerHTML = ""; tabPrices(body, i); } }, g[2])));
+  const on = await configuredMap();
+  const groups = PRICE_GROUPS.filter((g) => on[g[0]]);
+  if (!groups.length) { body.append(el("div", { class: "cg-dim" }, "还没有配置小云雀或 LibTV，请先在「账户」里配置。")); return; }
+  const [prov, kind, title] = groups[Math.min(group, groups.length - 1)];
+  const seg = el("div", { class: "cg-seg" }, groups.map((g, i) => el("div", { class: "cg-tab" + (i === group ? " on" : ""), onclick: () => { body.innerHTML = ""; tabPrices(body, i); } }, g[2])));
   body.append(seg, el("div", { class: "cg-dim", style: "margin-bottom:8px" },
     "按网站上标的价格填写。计费方式选「每秒」时按时长乘，「每张」按张数乘；某分辨率不填就用「默认」。节点标题栏的 ⚡ 显示按此估算的消耗，括号里的“实测”是上次运行前后余额差。"));
   const box = el("div", {}, el("div", { class: "cg-dim" }, "加载模型…"));
@@ -733,7 +772,7 @@ app.registerExtension({
         id: "cloudgen-credits",
         icon: "pi pi-wallet",
         title: "云端积分",
-        tooltip: "小云雀 / LibTV 积分与授权",
+        tooltip: "小云雀 / LibTV / Lovart 积分与授权",
         type: "custom",
         render: (root) => renderPanel(root),
       });

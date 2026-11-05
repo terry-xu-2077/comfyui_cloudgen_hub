@@ -12,3 +12,6 @@ assets_cache.json
 assets_cache.json.tmp
 jobs.json
 jobs.json.tmp
+lovart_credentials.json
+lovart_credentials.json.tmp
+lovart_tools.json

@@ -95,7 +95,7 @@ def remove(jid: str):
 
 def fetch(jid: str) -> dict:
     """取回任务结果：已完成就把结果下载到 output/cloudgen；未完成就查一次远端状态。"""
-    from . import libtv, xyq
+    from . import libtv, lovart, xyq
     j = get(jid)
     if not j:
         raise util.CloudGenError("没有这条任务记录")
@@ -128,6 +128,14 @@ def fetch(jid: str) -> dict:
                 return {"status": "failed", "error": xyq._fail_text(d.get("fail_reason"))}
             if st != "done" or not urls:
                 return {"status": "pending", "remote_status": st}
+        elif j["provider"] == "lovart":
+            try:
+                urls = lovart.fetch_job(j)
+            except util.CloudGenError as exc:
+                update(jid, status="failed", error=str(exc))
+                return {"status": "failed", "error": str(exc)}
+            if not urls:
+                return {"status": "pending", "remote_status": "生成中"}
         else:
             return {"status": "pending", "remote_status": "未拿到任务 ID，重新运行相同参数的节点即可续接"}
     if not urls:
