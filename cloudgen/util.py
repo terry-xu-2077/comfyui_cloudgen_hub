@@ -240,15 +240,14 @@ def check_interrupt():
         pass
 
 
-def send_progress(node_id: str | None, text: str, log: bool = True):
-    """在节点上显示进度文字（前端 cloudgen.progress 事件）。log=False 时不打印到控制台。"""
+def send_progress(node_id: str | None, text: str):
+    """在节点上显示进度文字（前端 cloudgen.progress 事件）。"""
     try:
         from server import PromptServer
         PromptServer.instance.send_sync("cloudgen.progress", {"node": node_id, "text": text})
     except Exception:
         pass
-    if log:
-        print(f"[CloudGen] {text}")
+    print(f"[CloudGen] {text}")
 
 
 def progress_bar(percent):

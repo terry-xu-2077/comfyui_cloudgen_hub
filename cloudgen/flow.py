@@ -12,10 +12,7 @@ from __future__ import annotations
 
 import base64
 import json
-import math
-import os
 import re
-import statistics
 import threading
 import time
 import urllib.error
@@ -243,81 +240,6 @@ def _fix_url(u: str) -> str:
     return u
 
 
-# ---------------------------------------------------------------- 估算进度
-# Flow2API 的生成请求是一次阻塞调用，拿不到真实进度。按同一模型最近几次的耗时中位数估算。
-DURATIONS_PATH = os.path.join(util.PACK_DIR, "flow_durations.json")
-DURATION_KEEP = 10
-_dur_lock = threading.Lock()
-
-
-def _durations() -> dict:
-    try:
-        with open(DURATIONS_PATH, "r", encoding="utf-8") as fp:
-            d = json.load(fp)
-            return d if isinstance(d, dict) else {}
-    except (OSError, json.JSONDecodeError):
-        return {}
-
-
-def record_duration(model_id: str, seconds: float):
-    with _dur_lock:
-        d = _durations()
-        d[model_id] = (d.get(model_id, []) + [round(seconds, 1)])[-DURATION_KEEP:]
-        tmp = DURATIONS_PATH + ".tmp"
-        with open(tmp, "w", encoding="utf-8") as fp:
-            json.dump(d, fp, indent=1)
-        os.replace(tmp, DURATIONS_PATH)
-
-
-def estimate_seconds(model_id: str, default: float) -> float:
-    """同模型最近耗时的中位数；样本不足 3 次时用同分辨率（-2k/-4k/1K）其他模型的，再没有就用默认值。"""
-    d = _durations()
-    own = d.get(model_id, [])
-    if len(own) >= 3:
-        return statistics.median(own)
-    tier = lambda k: k[-2:] if k.endswith(("-2k", "-4k")) else ("1k" if "image" in k else "video")
-    pool = [s for k, v in d.items() if tier(k) == tier(model_id) for s in v]
-    return statistics.median(pool) if len(pool) >= 3 else default
-
-
-def estimated_percent(elapsed: float, expected: float) -> int:
-    """前 90% 的时间匀速走到 90%，之后放慢逼近 99%，完成前不会到 100%。"""
-    f = elapsed / max(expected, 1.0)
-    if f <= 0.9:
-        return int(f * 100)
-    return min(99, int(90 + 9 * (1 - math.exp(-(f - 0.9) / 0.3))))
-
-
-class EstimatedProgress:
-    """with 块内每秒在节点上显示「<label> 约 N%」并更新进度条；块正常结束时记录这次耗时。"""
-
-    def __init__(self, model_id: str, node_id, label: str = "生成中", default: float = 60.0):
-        self.model_id, self.node_id, self.label = model_id, node_id, label
-        self.expected = estimate_seconds(model_id, default)
-        self._stop = threading.Event()
-
-    def _tick(self):
-        while not self._stop.is_set():
-            pct = estimated_percent(time.time() - self._t0, self.expected)
-            util.send_progress(self.node_id, f"{self.label} 约 {pct}%", log=False)
-            util.progress_bar(pct)
-            self._stop.wait(1.0)
-
-    def __enter__(self):
-        self._t0 = time.time()
-        util.send_progress(self.node_id, f"{self.label} 预计约 {int(self.expected)} 秒")
-        self._thread = threading.Thread(target=self._tick, daemon=True)
-        self._thread.start()
-        return self
-
-    def __exit__(self, exc_type, exc, tb):
-        self._stop.set()
-        self._thread.join(timeout=2)
-        if exc_type is None:
-            record_duration(self.model_id, time.time() - self._t0)
-            util.progress_bar(100)
-
-
 def _is_error_line(ln: str) -> bool:
     return ln.startswith(("错误", "❌")) or ln.lower().startswith("error") or "生成失败" in ln
 
@@ -326,7 +248,7 @@ def _friendly_progress(line: str) -> str:
     """Flow2API 的进度文字里有打码/验证码等内部细节，节点上统一显示成「正在生成中…」。"""
     if re.search(r"打码|验证码|reCAPTCHA|captcha|recaptcha", line, re.I):
         return "正在生成中…"
-    return line
+    return re.sub(r"^生成进度[:：]\s*", "生成中 ", line)
 
 
 def chat_generate(model_id: str, prompt: str, images: list[str], node_id=None, timeout: float = 1200,

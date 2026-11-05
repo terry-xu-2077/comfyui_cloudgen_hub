@@ -713,8 +713,8 @@ class FlowImage(_ListInput):
         try:
             ref_urls = flow.image_refs(refs, unique_id)
             for n in range(max(1, count)):
-                with flow.EstimatedProgress(mid, unique_id, "生成中" + (f"（第 {n + 1}/{count} 张）" if count > 1 else ""), default=60):
-                    out = flow.chat_generate(mid, text, ref_urls, unique_id, timeout=900, quiet=True)
+                util.send_progress(unique_id, "生成中" + (f"（第 {n + 1}/{count} 张）" if count > 1 else "") + "…")
+                out = flow.chat_generate(mid, text, ref_urls, unique_id, timeout=900)
                 u = out["urls"][-1]
                 blobs.append(flow.fetch_image(u)); urls.append(u)
         except CloudGenError as exc:
@@ -788,8 +788,8 @@ class FlowVideo(_ListInput):
         jid = _flow_job("video", m["name"], prompt, jobs.make_key("flow", "video", mid, prompt, seed, len(imgs)))
         try:
             ref_urls = flow.image_refs(imgs, unique_id)
-            with flow.EstimatedProgress(mid, unique_id, default=150):
-                out = flow.chat_generate(mid, _xyq_mentions(prompt.strip()), ref_urls, unique_id, timeout=1800, quiet=True)
+            util.send_progress(unique_id, "生成中…")
+            out = flow.chat_generate(mid, _xyq_mentions(prompt.strip()), ref_urls, unique_id, timeout=1800)
             vids = [u for u in out["urls"] if re.search(r"\.(mp4|webm|mov)(\?|$)|video", u, re.I)] or out["urls"]
             data = flow.fetch(vids[-1], timeout=900)
         except CloudGenError as exc:
